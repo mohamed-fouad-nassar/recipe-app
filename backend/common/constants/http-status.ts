@@ -1,5 +1,8 @@
 export enum httpStatus {
-  SUCCESS = "success",
-  ERROR = "error",
-  FAIL = "fail",
+  SUCCESS = "Success",
+  ERROR = "Error",
+  FAIL = "Fail",
 }
+
+// export type httpStatusType = typeof httpStatus;
+export type httpStatusType = `${httpStatus}`;

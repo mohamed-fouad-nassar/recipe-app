@@ -9,8 +9,8 @@ export const errorHandler = (
   next: NextFunction,
 ) => {
   console.error("ERROR: ", err);
-  res.status(err.statusCode || 500).json({
-    status: httpStatus.ERROR,
+  res.status(err.code || 500).json({
+    status: err.status || httpStatus.ERROR,
     message: err.message || "Internal Server Error",
   });
 };

@@ -1,19 +1,22 @@
 // VALIDATION ==> express-validator middleware
-
-import HttpError from "../utils/http-error";
 import { validationResult } from "express-validator";
 import { Request, Response, NextFunction } from "express";
+import { httpStatus } from "../constants/http-status";
 
 export const validate = (req: Request, res: Response, next: NextFunction) => {
   const errors = validationResult(req);
 
-  if (!errors.isEmpty()) {
+  if (errors.isEmpty()) return next();
+  else {
     const formattedErrors = errors.array().map((err) => ({
       field: err.type === "field" ? err.path : undefined,
       message: err.msg,
     }));
-    return next(new HttpError(400, JSON.stringify(formattedErrors)));
-  }
+    console.log(formattedErrors);
 
-  return next();
+    return res.status(400).json({
+      status: httpStatus.FAIL,
+      errors: formattedErrors,
+    });
+  }
 };

@@ -6,6 +6,8 @@ import express from "express";
 import { notFound } from "./common/middlewares/not-found";
 import { errorHandler } from "./common/middlewares/error-handle";
 
+import authRoutes from "./modules/auth/auth.routes";
+
 const app = express();
 
 // Middlewares
@@ -19,6 +21,10 @@ app.get("/api/health", (_, res) => {
   res.json({ message: "API is running 🚀" });
 });
 
+// App Routes
+app.use("/api/auth", authRoutes);
+
+// Error handlers
 app.use(notFound);
 app.use(errorHandler);
 
