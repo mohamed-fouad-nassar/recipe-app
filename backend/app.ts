@@ -2,6 +2,7 @@ import cors from "cors";
 import morgan from "morgan";
 import helmet from "helmet";
 import express from "express";
+import cookieParser from "cookie-parser";
 
 import { notFound } from "./common/middlewares/not-found";
 import { errorHandler } from "./common/middlewares/error-handle";
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use(cors());
 app.use(helmet());
 app.use(morgan("dev"));
+app.use(cookieParser());
 
 // API Health check
 app.get("/api/health", (_, res) => {
