@@ -12,7 +12,7 @@ const router = Router();
 
 router.use(protect);
 
-router.route("/").get(getAllFavorites);
+router.get("/", getAllFavorites);
 
 router
   .route("/:id")
