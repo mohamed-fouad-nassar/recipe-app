@@ -11,8 +11,8 @@ import { AuthRequest } from "../../common/middlewares/protect";
 import { httpStatus } from "../../common/constants/http-status";
 
 export const getAllRecipes = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const recipes = await getAllRecipesApi(req.query);
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    const recipes = await getAllRecipesApi(req.query, req.user?.id);
     return res.json({
       status: httpStatus.SUCCESS,
       message: "Recipes fetched successfully",
