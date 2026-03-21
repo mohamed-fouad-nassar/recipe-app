@@ -7,8 +7,9 @@ import cookieParser from "cookie-parser";
 import { notFound } from "./common/middlewares/not-found";
 import { errorHandler } from "./common/middlewares/error-handle";
 
-import authRoutes from "./modules/auth/auth.routes";
-import recipeRoutes from "./modules/recipe/recipe.routes";
+import authRoute from "./modules/auth/auth.routes";
+import recipesRoute from "./modules/recipe/recipe.routes";
+import favoritesRoute from "./modules/favorite/favorite.routes";
 
 const app = express();
 
@@ -25,8 +26,9 @@ app.get("/api/health", (_, res) => {
 });
 
 // App Routes
-app.use("/api/auth", authRoutes);
-app.use("/api/recipes", recipeRoutes);
+app.use("/api/auth", authRoute);
+app.use("/api/recipes", recipesRoute);
+app.use("/api/favorites", favoritesRoute);
 
 // Error handlers
 app.use(notFound);
