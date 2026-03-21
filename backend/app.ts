@@ -8,6 +8,7 @@ import { notFound } from "./common/middlewares/not-found";
 import { errorHandler } from "./common/middlewares/error-handle";
 
 import authRoute from "./modules/auth/auth.routes";
+import likesRoute from "./modules/like/like.routes";
 import recipesRoute from "./modules/recipe/recipe.routes";
 import favoritesRoute from "./modules/favorite/favorite.routes";
 
@@ -27,6 +28,7 @@ app.get("/api/health", (_, res) => {
 
 // App Routes
 app.use("/api/auth", authRoute);
+app.use("/api/likes", likesRoute);
 app.use("/api/recipes", recipesRoute);
 app.use("/api/favorites", favoritesRoute);
 
