@@ -66,5 +66,4 @@ export const removeRecipe = async (
     );
 
   await recipe.deleteOne();
-  return recipe;
 };
