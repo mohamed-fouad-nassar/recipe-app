@@ -1,23 +1,19 @@
-import {
-  addFavorite,
-  removeFavorite,
-  getAllFavorites,
-} from "./favorite.controller";
 import { Router } from "express";
 import { protect } from "../../common/middlewares/protect";
 import { validate } from "../../common/middlewares/validate";
+import { addLike, getAllLikes, removeLike } from "./like.controller";
 import { objectIdValidation } from "../../common/validations/object-id";
 
 const router = Router();
 
 router.use(protect);
 
-router.get("/", getAllFavorites);
+router.get("/", getAllLikes);
 
 router
   .route("/:id")
   .all(objectIdValidation, validate)
-  .post(addFavorite)
-  .delete(removeFavorite);
+  .post(addLike)
+  .delete(removeLike);
 
 export default router;

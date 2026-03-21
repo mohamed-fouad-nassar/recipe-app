@@ -6,6 +6,9 @@ import { httpStatus } from "../../common/constants/http-status";
 
 interface IRecipeWithFavorite extends IRecipe {
   isFavorite: boolean;
+  isLiked: boolean;
+  favoritesCount: number;
+  likesCount: number;
 }
 
 export const getAllRecipes = async (
@@ -15,39 +18,43 @@ export const getAllRecipes = async (
   const { search, category, page = 1, limit = 10 } = query;
   const match: any = {};
   if (search) match.title = { $regex: search, $options: "i" };
-  if (category) match.category = { $regex: search, $options: "i" };
+  if (category) match.category = { $regex: category, $options: "i" };
+  const userObjectId = new mongoose.Types.ObjectId(userId);
 
   const pipeline: any[] = [
     { $match: match },
     {
       $lookup: {
         from: "favorites",
-        let: { recipeId: "$_id" },
-        pipeline: [
-          {
-            $match: {
-              $expr: {
-                $and: [
-                  { $eq: ["$recipeId", "$$recipeId"] },
-                  {
-                    $eq: ["$userId", new mongoose.Types.ObjectId(userId)],
-                  },
-                ],
-              },
-            },
-          },
-        ],
-        as: "favoriteData",
+        localField: "_id",
+        foreignField: "recipeId",
+        as: "favorites",
+      },
+    },
+    {
+      $lookup: {
+        from: "likes",
+        localField: "_id",
+        foreignField: "recipeId",
+        as: "likes",
       },
     },
     {
       $addFields: {
-        isFavorite: { $gt: [{ $size: "$favoriteData" }, 0] },
+        favoritesCount: { $size: "$favorites" },
+        likesCount: { $size: "$likes" },
+        isFavorite: {
+          $in: [userObjectId, "$favorites.userId"],
+        },
+        isLiked: {
+          $in: [userObjectId, "$likes.userId"],
+        },
       },
     },
     {
       $project: {
-        favoriteData: 0,
+        favorites: 0,
+        likes: 0,
       },
     },
     {
@@ -58,9 +65,7 @@ export const getAllRecipes = async (
         as: "createdBy",
       },
     },
-    {
-      $unwind: "$createdBy",
-    },
+    { $unwind: "$createdBy" },
     {
       $project: {
         "createdBy.password": 0,
@@ -79,7 +84,6 @@ export const getAllRecipes = async (
   const recipes = await Recipe.aggregate<IRecipeWithFavorite>(pipeline);
   return recipes;
 };
-
 export const createRecipe = async (
   data: any,
   userId: string,
