@@ -1,11 +1,8 @@
-import jwt from "jsonwebtoken";
+import { JwtPayload } from "jsonwebtoken";
 import HttpError from "../utils/http-error";
+import { verifyToken } from "../utils/tokens";
+import { httpStatus } from "../constants/http-status";
 import { Request, Response, NextFunction } from "express";
-
-interface JwtPayload {
-  id: string;
-  role: string;
-}
 
 export interface AuthRequest extends Request {
   user?: JwtPayload;
@@ -26,19 +23,22 @@ export const protect = (
   }
 
   if (!token) {
-    return next(new HttpError(401, "No Token Provided, Login Required"));
+    return next(
+      new HttpError(401, httpStatus.FAIL, "No Token Provided, Login Required"),
+    );
   }
 
   try {
-    const decoded = jwt.verify(
-      token,
-      process.env.JWT_SECRET as string,
-    ) as JwtPayload;
-
+    const decoded = verifyToken(token);
     req.user = decoded;
-
     next();
   } catch (error) {
-    return next(new HttpError(401, "Invalid or expired token, Login Again"));
+    return next(
+      new HttpError(
+        401,
+        httpStatus.FAIL,
+        "Invalid or expired token, Login Again",
+      ),
+    );
   }
 };
