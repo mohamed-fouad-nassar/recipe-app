@@ -1,13 +1,8 @@
-import jwt from "jsonwebtoken";
-import { env } from "../config/env";
+import { JwtPayload } from "jsonwebtoken";
 import HttpError from "../utils/http-error";
+import { verifyToken } from "../utils/tokens";
 import { httpStatus } from "../constants/http-status";
 import { Request, Response, NextFunction } from "express";
-
-interface JwtPayload {
-  id: string;
-  role: string;
-}
 
 export interface AuthRequest extends Request {
   user?: JwtPayload;
@@ -34,10 +29,8 @@ export const protect = (
   }
 
   try {
-    const decoded = jwt.verify(token, env.jwtSecret) as JwtPayload;
-
+    const decoded = verifyToken(token);
     req.user = decoded;
-
     next();
   } catch (error) {
     return next(

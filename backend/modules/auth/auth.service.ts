@@ -2,6 +2,7 @@ import {
   hashToken,
   signAccessToken,
   signRefreshToken,
+  verifyRefreshToken,
 } from "../../common/utils/tokens";
 import { User } from "../user/user.model";
 import { IUser } from "../user/user.types";
@@ -39,8 +40,66 @@ export const loginUser = async ({
 
   const token = signAccessToken(user._id.toString(), user.role);
   const refreshToken = signRefreshToken(user._id.toString());
-  user.refreshToken = hashToken(refreshToken);
+  user.refreshToken = refreshToken;
   await user.save();
 
   return { user, token, refreshToken };
+};
+
+export const refreshAccessToken = async (
+  refreshToken: string,
+): Promise<{
+  token: string;
+  newRefreshToken: string;
+}> => {
+  if (!refreshToken)
+    throw new HttpError(401, httpStatus.FAIL, "You are not logged in");
+
+  let decoded;
+  try {
+    decoded = verifyRefreshToken(refreshToken);
+  } catch (err) {
+    throw new HttpError(401, httpStatus.FAIL, "Invalid or expired token");
+  }
+
+  const user = await User.findById(decoded?.id);
+  if (!user)
+    throw new HttpError(401, httpStatus.FAIL, "Invalid token provided");
+
+  console.log(user.refreshToken !== hashToken(refreshToken));
+  console.log(user.refreshToken);
+  console.log(hashToken(refreshToken as string));
+
+  if (user.refreshToken !== hashToken(refreshToken))
+    throw new HttpError(401, httpStatus.FAIL, "Token mismatch");
+
+  const token = signAccessToken(user._id.toString(), user.role);
+  const newRefreshToken = signRefreshToken(user._id.toString());
+
+  user.refreshToken = newRefreshToken;
+  await user.save();
+
+  return { token, newRefreshToken };
+};
+
+export const logoutUser = async (refreshToken: string): Promise<void> => {
+  if (!refreshToken)
+    throw new HttpError(401, httpStatus.FAIL, "You are not logged in");
+
+  let decoded;
+  try {
+    decoded = verifyRefreshToken(refreshToken);
+  } catch (err) {
+    throw new HttpError(401, httpStatus.FAIL, "Invalid or expired token");
+  }
+
+  const user = await User.findById(decoded?.id);
+  if (!user)
+    throw new HttpError(401, httpStatus.FAIL, "Invalid token provided");
+
+  if (user.refreshToken !== hashToken(refreshToken))
+    throw new HttpError(401, httpStatus.FAIL, "Token mismatch");
+
+  user.refreshToken = "";
+  await user.save();
 };

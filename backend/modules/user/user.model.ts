@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import { IUser } from "./user.types";
 import { model, Schema } from "mongoose";
+import { hashToken } from "../../common/utils/tokens";
 
 const userSchema = new Schema<IUser>(
   {
@@ -43,9 +44,14 @@ userSchema.set("toJSON", {
 });
 
 userSchema.pre("save", async function () {
-  if (!this.isModified("password")) return;
-  const salt = bcrypt.genSaltSync(10);
-  this.password = await bcrypt.hash(this.password, salt);
+  if (this.isModified("password")) {
+    const salt = bcrypt.genSaltSync(10);
+    this.password = await bcrypt.hash(this.password, salt);
+  }
+
+  if (this.isModified("refreshToken") && this.refreshToken !== "") {
+    this.refreshToken = hashToken(this.refreshToken as string);
+  }
 });
 
 userSchema.methods.comparePassword = async function (password: string) {

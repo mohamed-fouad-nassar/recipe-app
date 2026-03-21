@@ -1,4 +1,9 @@
-import { loginUser, registerUser } from "./auth.service";
+import {
+  loginUser,
+  logoutUser,
+  registerUser,
+  refreshAccessToken,
+} from "./auth.service";
 import { catchAsync } from "../../common/utils/catch-async";
 import { httpStatus } from "../../common/constants/http-status";
 
@@ -32,15 +37,34 @@ export const login = catchAsync(async (req, res, next) => {
 });
 
 export const logout = catchAsync(async (req, res, next) => {
+  const { refreshToken } = req.cookies;
+  await logoutUser(refreshToken);
+  res.clearCookie("refreshToken", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+  });
   return res.json({
     status: httpStatus.SUCCESS,
-    message: "Welcome to logout endpoint",
+    message: "User logged out successfully",
+    data: null,
   });
 });
 
 export const refresh = catchAsync(async (req, res, next) => {
+  const { refreshToken } = req.cookies;
+  const { token, newRefreshToken } = await refreshAccessToken(refreshToken);
+  res.cookie("refreshToken", newRefreshToken, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+    maxAge: 15 * 24 * 60 * 60 * 1000,
+  });
   return res.json({
     status: httpStatus.SUCCESS,
-    message: "Welcome to refresh endpoint",
+    message: "User access token refreshed successfully",
+    data: {
+      token,
+    },
   });
 });
