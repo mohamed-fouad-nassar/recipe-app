@@ -37,6 +37,13 @@ A full-stack web application where users can create, share, and discover recipes
 
 ---
 
+### 👍️ Likes
+
+- Save / unsave recipes
+- Personalized likes list
+
+---
+
 ### 💬 Comments
 
 - Add comments to recipes
@@ -62,7 +69,6 @@ A full-stack web application where users can create, share, and discover recipes
 
 - Cloudinary (image upload)
 - JWT (authentication)
-- Redis (caching - optional)
 
 ---
 
@@ -70,22 +76,29 @@ A full-stack web application where users can create, share, and discover recipes
 
 ### Backend Structure (Clean Architecture)
 
-```
+```bash
 backend/
- ├── controllers/
- ├── services/
- ├── repositories/
- ├── models/
- ├── routes/
- ├── middlewares/
- └── utils/
+ ├── common/
+ ├───── config/
+ ├───── constants/
+ ├───── middlewares/
+ ├───── utils/
+ ├───── validations/
+ ├── modules/
+ ├─────  auth/
+ ├─────  comment/
+ ├─────  favorite/
+ ├─────  like/
+ ├─────  profile/
+ ├─────  user/
+ └─────  recipe/
 ```
 
 ---
 
 ### Frontend Structure (Angular)
 
-```
+```bash
 src/app/
  ├── core/        (auth, interceptors)
  ├── shared/      (reusable components)
@@ -101,7 +114,7 @@ src/app/
 
 ### 👤 User
 
-```js
+```bash
 {
   _id,
   name,
@@ -109,8 +122,8 @@ src/app/
   password,
   avatar,
   role,
-  favorites: [recipeId],
   createdAt
+  updatedAt
 }
 ```
 
@@ -118,7 +131,7 @@ src/app/
 
 ### 🍲 Recipe
 
-```js
+```bash
 {
   _id,
   title,
@@ -130,8 +143,8 @@ src/app/
   steps: [String],
   category,
   createdBy: userId,
-  likes: Number,
   createdAt
+  updatedAt
 }
 ```
 
@@ -139,9 +152,13 @@ src/app/
 
 ### 💬 Comment
 
-```js
+```bash
 {
-  (_id, recipeId, userId, text, createdAt);
+  _id,
+  recipeId,
+  userId,
+  content,
+  createdAt
 }
 ```
 
@@ -151,7 +168,7 @@ src/app/
 
 ### Auth
 
-```
+```bash
 POST   /api/auth/register
 POST   /api/auth/login
 POST   /api/auth/refresh
@@ -162,10 +179,10 @@ POST   /api/auth/logout
 
 ### Recipes
 
-```
+```bash
 GET    /api/recipes
-GET    /api/recipes/:id
 POST   /api/recipes
+GET    /api/recipes/:id
 PATCH  /api/recipes/:id
 DELETE /api/recipes/:id
 ```
@@ -174,28 +191,41 @@ DELETE /api/recipes/:id
 
 ### Favorites
 
+```bash
+GET   /api/favorites
+POST   /api/favorites/:id
+DELETE /api/favorites/:id
 ```
-POST   /api/recipes/:id/favorite
-DELETE /api/recipes/:id/favorite
+
+---
+
+### Likes
+
+```bash
+GET   /api/likes
+POST   /api/likes/:id
+DELETE /api/likes/:id
 ```
 
 ---
 
 ### Comments
 
-```
-POST   /api/recipes/:id/comments
-GET    /api/recipes/:id/comments
+```bash
+GET   /api/comments/:recipeId
+POST   /api/comments/:recipeId
+GET    /api/comments/:commentId
+PATCH    /api/comments/:commentId
+DELETE    /api/comments/:commentId
 ```
 
 ---
 
 ## 🔐 Security
 
-- Password hashing (bcrypt)
+- Password hashing (bcrypt.js)
 - JWT authentication
 - Refresh token rotation
-- Rate limiting
 - Input validation & sanitization
 - Helmet for HTTP security
 
@@ -217,7 +247,6 @@ GET    /api/recipes/:id/comments
 
 - Nginx for serving Angular app
 - MongoDB Atlas (cloud database)
-- CI/CD (GitHub Actions)
 
 ---
 
@@ -257,8 +286,11 @@ Create a `.env` file in backend:
 ```
 PORT=5000
 MONGO_URI=your_mongodb_uri
-JWT_SECRET=your_secret
+JWT_SECRET=your_access_secret
 JWT_REFRESH_SECRET=your_refresh_secret
+JWT_ACCESS_TOKEN_EXPIRY="15m"
+JWT_REFRESH_TOKEN_EXPIRY="10d"
+TOKEN_SECRET=your_token_secret
 CLOUDINARY_URL=your_cloudinary_url
 ```
 
