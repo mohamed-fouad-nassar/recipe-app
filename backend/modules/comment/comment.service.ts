@@ -13,6 +13,16 @@ export const getAllComments = async (recipeId: string) => {
   return comments;
 };
 
+export const getCommentById = async (id: string) => {
+  const comment = await Comment.findById(id).populate({
+    path: "userId",
+    select: "name email",
+  });
+  if (!comment) throw new HttpError(404, httpStatus.FAIL, "Comment not found");
+
+  return comment;
+};
+
 export const createComment = async (
   recipeId: string,
   userId: string,

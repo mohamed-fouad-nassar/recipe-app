@@ -3,6 +3,7 @@ import {
   deleteComment,
   updateComment,
   getAllComments,
+  getCommentById as getCommentByIdApi,
 } from "./comment.service";
 import { NextFunction, Response } from "express";
 import { catchAsync } from "../../common/utils/catch-async";
@@ -17,6 +18,18 @@ export const getAllCommentsByRecipeId = catchAsync(
       status: httpStatus.SUCCESS,
       message: "Comments fetched successfully",
       data: { comments },
+    });
+  },
+);
+
+export const getCommentById = catchAsync(
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    const { commentId } = req.params;
+    const comment = await getCommentByIdApi(commentId as string);
+    return res.json({
+      status: httpStatus.SUCCESS,
+      message: "Comment fetched successfully",
+      data: { comment },
     });
   },
 );
