@@ -1,5 +1,5 @@
 import { param } from "express-validator";
 
-export const objectIdValidation = [
-  param("id").isMongoId().withMessage("Invalid MongoDB ObjectId"),
+export const objectIdValidation = (fieldName: string = "id") => [
+  param(fieldName).isMongoId().withMessage("Invalid MongoDB ObjectId"),
 ];
