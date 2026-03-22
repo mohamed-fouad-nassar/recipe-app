@@ -1,4 +1,5 @@
 import {
+  getCommentById,
   deleteCommentById,
   updateCommentById,
   createCommentByRecipeId,
@@ -23,6 +24,7 @@ router
 router
   .route("/:commentId")
   .all(objectIdValidation("commentId"), validate)
+  .get(getCommentById)
   .patch(commentValidation, validate, updateCommentById)
   .delete(deleteCommentById);
 
