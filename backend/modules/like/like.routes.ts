@@ -12,7 +12,7 @@ router.get("/", getAllLikes);
 
 router
   .route("/:id")
-  .all(objectIdValidation, validate)
+  .all(objectIdValidation(), validate)
   .post(addLike)
   .delete(removeLike);
 
