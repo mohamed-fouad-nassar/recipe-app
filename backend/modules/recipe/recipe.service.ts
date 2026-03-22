@@ -1,15 +1,8 @@
 import mongoose from "mongoose";
 import { Recipe } from "./recipe.model";
-import { IRecipe } from "./recipe.types";
 import HttpError from "../../common/utils/http-error";
+import { IRecipe, IRecipeWithFavorite } from "./recipe.types";
 import { httpStatus } from "../../common/constants/http-status";
-
-interface IRecipeWithFavorite extends IRecipe {
-  isFavorite: boolean;
-  isLiked: boolean;
-  favoritesCount: number;
-  likesCount: number;
-}
 
 export const getAllRecipes = async (
   query: any,
@@ -26,35 +19,95 @@ export const getAllRecipes = async (
     {
       $lookup: {
         from: "favorites",
-        localField: "_id",
-        foreignField: "recipeId",
-        as: "favorites",
+        let: { recipeId: "$_id" },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $eq: ["$recipeId", "$$recipeId"],
+              },
+            },
+          },
+          { $count: "count" },
+        ],
+        as: "favoritesCountData",
       },
     },
     {
       $lookup: {
         from: "likes",
-        localField: "_id",
-        foreignField: "recipeId",
-        as: "likes",
+        let: { recipeId: "$_id" },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $eq: ["$recipeId", "$$recipeId"],
+              },
+            },
+          },
+          { $count: "count" },
+        ],
+        as: "likesCountData",
+      },
+    },
+    {
+      $lookup: {
+        from: "favorites",
+        let: { recipeId: "$_id" },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $and: [
+                  { $eq: ["$recipeId", "$$recipeId"] },
+                  { $eq: ["$userId", userObjectId] },
+                ],
+              },
+            },
+          },
+          { $limit: 1 },
+        ],
+        as: "isFavoriteData",
+      },
+    },
+    {
+      $lookup: {
+        from: "likes",
+        let: { recipeId: "$_id" },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $and: [
+                  { $eq: ["$recipeId", "$$recipeId"] },
+                  { $eq: ["$userId", userObjectId] },
+                ],
+              },
+            },
+          },
+          { $limit: 1 },
+        ],
+        as: "isLikedData",
       },
     },
     {
       $addFields: {
-        favoritesCount: { $size: "$favorites" },
-        likesCount: { $size: "$likes" },
-        isFavorite: {
-          $in: [userObjectId, "$favorites.userId"],
+        favoritesCount: {
+          $ifNull: [{ $arrayElemAt: ["$favoritesCountData.count", 0] }, 0],
         },
-        isLiked: {
-          $in: [userObjectId, "$likes.userId"],
+        likesCount: {
+          $ifNull: [{ $arrayElemAt: ["$likesCountData.count", 0] }, 0],
         },
+        isFavorite: { $gt: [{ $size: "$isFavoriteData" }, 0] },
+        isLiked: { $gt: [{ $size: "$isLikedData" }, 0] },
       },
     },
     {
       $project: {
-        favorites: 0,
-        likes: 0,
+        favoritesCountData: 0,
+        likesCountData: 0,
+        isFavoriteData: 0,
+        isLikedData: 0,
       },
     },
     {

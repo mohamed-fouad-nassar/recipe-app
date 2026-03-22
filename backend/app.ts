@@ -10,6 +10,7 @@ import { errorHandler } from "./common/middlewares/error-handle";
 import authRoute from "./modules/auth/auth.routes";
 import likesRoute from "./modules/like/like.routes";
 import recipesRoute from "./modules/recipe/recipe.routes";
+import commentsRoute from "./modules/comment/comment.routes";
 import favoritesRoute from "./modules/favorite/favorite.routes";
 
 const app = express();
@@ -30,6 +31,7 @@ app.get("/api/health", (_, res) => {
 app.use("/api/auth", authRoute);
 app.use("/api/likes", likesRoute);
 app.use("/api/recipes", recipesRoute);
+app.use("/api/comments", commentsRoute);
 app.use("/api/favorites", favoritesRoute);
 
 // Error handlers

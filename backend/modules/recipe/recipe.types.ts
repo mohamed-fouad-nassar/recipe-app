@@ -15,3 +15,10 @@ export interface IRecipe extends Document {
   createdBy: mongoose.Types.ObjectId;
   likes: number;
 }
+
+export interface IRecipeWithFavorite extends IRecipe {
+  isFavorite: boolean;
+  isLiked: boolean;
+  favoritesCount: number;
+  likesCount: number;
+}

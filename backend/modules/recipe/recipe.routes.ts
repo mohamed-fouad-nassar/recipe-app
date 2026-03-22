@@ -26,7 +26,7 @@ router
 
 router
   .route("/:id")
-  .all(objectIdValidation, validate)
+  .all(objectIdValidation(), validate)
   .get(getRecipeById)
   .patch(updateRecipeValidation, validate, updateRecipe)
   .delete(removeRecipe);

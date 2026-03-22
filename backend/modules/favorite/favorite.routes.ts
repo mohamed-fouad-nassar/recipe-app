@@ -16,7 +16,7 @@ router.get("/", getAllFavorites);
 
 router
   .route("/:id")
-  .all(objectIdValidation, validate)
+  .all(objectIdValidation(), validate)
   .post(addFavorite)
   .delete(removeFavorite);
 
