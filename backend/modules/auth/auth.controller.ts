@@ -22,8 +22,8 @@ export const login = catchAsync(async (req, res, next) => {
   const { user, token, refreshToken } = await loginUser({ email, password });
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
-    secure: true,
-    sameSite: "none",
+    secure: false, // REPLACE WITH TRUE in PRODUCTION
+    sameSite: "lax",
     maxAge: 15 * 24 * 60 * 60 * 1000,
   });
   return res.json({
@@ -41,8 +41,8 @@ export const logout = catchAsync(async (req, res, next) => {
   await logoutUser(refreshToken);
   res.clearCookie("refreshToken", {
     httpOnly: true,
-    secure: true,
-    sameSite: "none",
+    secure: false, // REPLACE WITH TRUE in PRODUCTION
+    sameSite: "lax",
   });
   return res.json({
     status: httpStatus.SUCCESS,
@@ -56,8 +56,8 @@ export const refresh = catchAsync(async (req, res, next) => {
   const { token, newRefreshToken } = await refreshAccessToken(refreshToken);
   res.cookie("refreshToken", newRefreshToken, {
     httpOnly: true,
-    secure: true,
-    sameSite: "none",
+    secure: false, // REPLACE WITH TRUE in PRODUCTION
+    sameSite: "lax",
     maxAge: 15 * 24 * 60 * 60 * 1000,
   });
   return res.json({
