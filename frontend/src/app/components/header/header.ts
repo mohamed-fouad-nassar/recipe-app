@@ -1,6 +1,6 @@
-import { ILink } from '../../app';
 import { RouterLink } from '@angular/router';
 import { Component, Input } from '@angular/core';
+import { ILink } from '../../layouts/app-layout';
 
 @Component({
   selector: 'app-header',

@@ -1,6 +1,6 @@
-import { ILink } from '../../app';
-import { Component, Input, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { ILink } from '../../layouts/app-layout';
+import { Component, Input, signal } from '@angular/core';
 
 @Component({
   selector: 'app-footer',
