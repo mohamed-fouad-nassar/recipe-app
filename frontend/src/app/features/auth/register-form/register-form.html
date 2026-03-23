@@ -1,0 +1,122 @@
+@if (errorMessage()) {
+  <p
+    class="mt-2 mb-4 p-4 border border-danger rounded-base bg-fg-danger/20 text-xs text-danger empty:hidden"
+  >
+    {{ errorMessage() }}
+  </p>
+}
+
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <div class="mb-4">
+    <label for="name" class="block mb-2.5 text-sm font-medium text-heading">Your name</label>
+    <input
+      id="name"
+      type="text"
+      formControlName="name"
+      placeholder="e.g. John Doe"
+      class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body/60"
+    />
+    @if (form.get('name')?.touched) {
+      @if (form.get('name')?.errors?.['required']) {
+        <p class="mt-2 ms-2 text-xs text-danger empty:hidden">Name is required</p>
+      }
+      @if (form.get('name')?.errors?.['serverError']) {
+        <p class="mt-2 ms-2 text-xs text-danger empty:hidden">
+          {{ form.get('name')?.errors?.['serverError'] }}
+        </p>
+      }
+    }
+  </div>
+
+  <div class="mb-4">
+    <label for="email" class="block mb-2.5 text-sm font-medium text-heading">Your email</label>
+    <input
+      id="email"
+      type="email"
+      formControlName="email"
+      placeholder="example@company.com"
+      class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body/60"
+    />
+    @if (form.get('email')?.touched) {
+      @if (form.get('email')?.errors?.['required']) {
+        <p class="mt-2 ms-2 text-xs text-danger empty:hidden">Email is required</p>
+      }
+      @if (form.get('email')?.errors?.['email']) {
+        <p class="mt-2 ms-2 text-xs text-danger empty:hidden">Invalid email format</p>
+      }
+      @if (form.get('email')?.errors?.['serverError']) {
+        <p class="mt-2 ms-2 text-xs text-danger empty:hidden">
+          {{ form.get('email')?.errors?.['serverError'] }}
+        </p>
+      }
+    }
+  </div>
+
+  <div class="mb-4">
+    <label for="password" class="block mb-2.5 text-sm font-medium text-heading"
+      >Your password</label
+    >
+    <input
+      id="password"
+      type="password"
+      placeholder="•••••••••"
+      formControlName="password"
+      class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body/60"
+      required
+    />
+    @if (form.get('password')?.touched) {
+      @if (form.get('password')?.errors?.['required']) {
+        <p class="mt-2 ms-2 text-xs text-danger empty:hidden">Password is required</p>
+      }
+      @if (form.get('password')?.errors?.['minlength']) {
+        <p class="mt-2 ms-2 text-xs text-danger empty:hidden">
+          Password must be at least 6 characters
+        </p>
+      }
+      @if (form.get('password')?.errors?.['serverError']) {
+        <p class="mt-2 ms-2 text-xs text-danger empty:hidden">
+          {{ form.get('password')?.errors?.['serverError'] }}
+        </p>
+      }
+    }
+  </div>
+
+  <div class="mb-4">
+    <label for="confirmPassword" class="block mb-2.5 text-sm font-medium text-heading"
+      >Confirm your Password</label
+    >
+    <input
+      id="confirmPassword"
+      type="password"
+      placeholder="•••••••••"
+      formControlName="confirmPassword"
+      class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body/60"
+      required
+    />
+    @if (form.get('confirmPassword')?.touched) {
+      @if (form.get('confirmPassword')?.errors?.['required']) {
+        <p class="mt-2 ms-2 text-xs text-danger empty:hidden">ConfirmPassword is required</p>
+      }
+      @if (form.get('confirmPassword')?.errors?.['minlength']) {
+        <p class="mt-2 ms-2 text-xs text-danger empty:hidden">
+          ConfirmPassword must be at least 6 characters
+        </p>
+      }
+      @if (form.hasError('passwordMismatch')) {
+        <p class="text-danger text-xs mt-1">Passwords do not match</p>
+      }
+      @if (form.get('confirmPassword')?.errors?.['serverError']) {
+        <p class="mt-2 ms-2 text-xs text-danger empty:hidden">
+          {{ form.get('confirmPassword')?.errors?.['serverError'] }}
+        </p>
+      }
+    }
+  </div>
+
+  <button
+    type="submit"
+    class="text-white bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none w-full mb-3"
+  >
+    Create Account
+  </button>
+</form>

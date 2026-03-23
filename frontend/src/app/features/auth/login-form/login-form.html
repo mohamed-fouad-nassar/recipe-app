@@ -1,0 +1,69 @@
+@if (errorMessage()) {
+  <p
+    class="mt-2 mb-4 p-4 border border-danger rounded-base bg-fg-danger/20 text-xs text-danger empty:hidden"
+  >
+    {{ errorMessage() }}
+  </p>
+}
+
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <div class="mb-4">
+    <label for="email" class="block mb-2.5 text-sm font-medium text-heading">Your email</label>
+    <input
+      id="email"
+      type="text"
+      formControlName="email"
+      placeholder="example@company.com"
+      class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body/60"
+    />
+
+    @if (form.get('email')?.touched) {
+      @if (form.get('email')?.errors?.['required']) {
+        <p class="mt-2 ms-2 text-xs text-danger empty:hidden">Email is required</p>
+      }
+      @if (form.get('email')?.errors?.['email']) {
+        <p class="mt-2 ms-2 text-xs text-danger empty:hidden">Invalid email format</p>
+      }
+      @if (form.get('email')?.errors?.['serverError']) {
+        <p class="mt-2 ms-2 text-xs text-danger empty:hidden">
+          {{ form.get('email')?.errors?.['serverError'] }}
+        </p>
+      }
+    }
+  </div>
+
+  <div class="mb-4">
+    <label for="password" class="block mb-2.5 text-sm font-medium text-heading"
+      >Your password</label
+    >
+    <input
+      id="password"
+      type="password"
+      placeholder="•••••••••"
+      formControlName="password"
+      class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body/60"
+    />
+    @if (form.get('password')?.touched) {
+      @if (form.get('password')?.errors?.['required']) {
+        <p class="mt-2 ms-2 text-xs text-danger empty:hidden">Password is required</p>
+      }
+      @if (form.get('password')?.errors?.['minlength']) {
+        <p class="mt-2 ms-2 text-xs text-danger empty:hidden">
+          Password must be at least 6 characters
+        </p>
+      }
+      @if (form.get('password')?.errors?.['serverError']) {
+        <p class="mt-2 ms-2 text-xs text-danger empty:hidden">
+          {{ form.get('password')?.errors?.['serverError'] }}
+        </p>
+      }
+    }
+  </div>
+
+  <button
+    type="submit"
+    class="text-white bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none w-full mb-3"
+  >
+    Login to your account
+  </button>
+</form>
