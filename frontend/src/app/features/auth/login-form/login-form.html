@@ -1,14 +1,35 @@
-<form action="#">
+@if (errorMessage()) {
+  <p
+    class="mt-2 mb-4 p-4 border border-danger rounded-base bg-fg-danger/20 text-xs text-danger empty:hidden"
+  >
+    {{ errorMessage() }}
+  </p>
+}
+
+<form [formGroup]="form" (ngSubmit)="submit()">
   <div class="mb-4">
     <label for="email" class="block mb-2.5 text-sm font-medium text-heading">Your email</label>
     <input
-      type="email"
       id="email"
-      class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body/60"
+      type="text"
+      formControlName="email"
       placeholder="example@company.com"
-      required
+      class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body/60"
     />
-    <p class="mt-2 ms-2 text-xs text-danger empty:hidden">Email is required</p>
+
+    @if (form.get('email')?.touched) {
+      @if (form.get('email')?.errors?.['required']) {
+        <p class="mt-2 ms-2 text-xs text-danger empty:hidden">Email is required</p>
+      }
+      @if (form.get('email')?.errors?.['email']) {
+        <p class="mt-2 ms-2 text-xs text-danger empty:hidden">Invalid email format</p>
+      }
+      @if (form.get('email')?.errors?.['serverError']) {
+        <p class="mt-2 ms-2 text-xs text-danger empty:hidden">
+          {{ form.get('email')?.errors?.['serverError'] }}
+        </p>
+      }
+    }
   </div>
 
   <div class="mb-4">
@@ -16,13 +37,27 @@
       >Your password</label
     >
     <input
-      type="password"
       id="password"
-      class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body/60"
+      type="password"
       placeholder="•••••••••"
-      required
+      formControlName="password"
+      class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body/60"
     />
-    <p class="mt-2 ms-2 text-xs text-danger empty:hidden"></p>
+    @if (form.get('password')?.touched) {
+      @if (form.get('password')?.errors?.['required']) {
+        <p class="mt-2 ms-2 text-xs text-danger empty:hidden">Password is required</p>
+      }
+      @if (form.get('password')?.errors?.['minlength']) {
+        <p class="mt-2 ms-2 text-xs text-danger empty:hidden">
+          Password must be at least 6 characters
+        </p>
+      }
+      @if (form.get('password')?.errors?.['serverError']) {
+        <p class="mt-2 ms-2 text-xs text-danger empty:hidden">
+          {{ form.get('password')?.errors?.['serverError'] }}
+        </p>
+      }
+    }
   </div>
 
   <button

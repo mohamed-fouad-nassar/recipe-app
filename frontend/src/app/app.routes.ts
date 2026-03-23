@@ -9,10 +9,14 @@ import { Home } from './pages/home/home';
 import { Login } from './pages/login/login';
 import { Register } from './pages/register/register';
 
+// guards
+import { authGuard, guestGuard } from './features/auth/auth.guard';
+
 export const routes: Routes = [
   {
     path: 'auth',
     component: AuthLayout,
+    canActivate: [guestGuard],
     children: [
       { path: 'login', component: Login },
       { path: 'register', component: Register },
@@ -21,7 +25,7 @@ export const routes: Routes = [
   {
     path: '',
     component: AppLayout,
-    // canActivate: [authGard],
+    canActivate: [authGuard],
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: Home },
