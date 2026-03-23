@@ -1,3 +1,74 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 
 @import 'tailwindcss';
+
+@import 'flowbite/src/themes/playful';
+
+@plugin "flowbite/plugin";
+@source "../node_modules/flowbite";
+
+@theme {
+  /* --- A. PRIMARY BRAND COLORS (The "Orange" Identity) --- */
+  --color-brand: #f26419; /* YOUR BRAND ORANGE */
+  --color-brand-strong: #c2410c; /* Darker orange for hovers */
+  --color-brand-medium: rgba(242, 100, 25, 0.5); /* For focus rings */
+  --color-brand-subtle: #fdba74; /* Lighter border accent */
+  --color-brand-softer: #fff7ed; /* Softest peach background */
+  --color-fg-brand: var(--color-brand); /* For active nav text */
+
+  /* --- B. NEUTRAL PALETTE & TYPOGRAPHY MAPPING (THE "SURFACE") --- */
+  /* This scale replaces default Flowbite grays with warm, earthy stone/slate */
+
+  /* --- Surface Backgrounds (Overriding specific "Modern" vars) --- */
+  --color-primary-soft: #ffffff; /* Changes blueish to pure white */
+  --color-neutral-primary: #ffffff; /* header bg */
+  --color-neutral-primary-medium: #ffffff; /* dropdown menu bg */
+  --color-neutral-primary-soft: #ffffff; /* footer bg */
+
+  /* --- Borders --- */
+  --color-default: #e7e7e4; /* Maps to border-default */
+
+  /* --- Text/Foreground Colors --- */
+  --color-heading: #2f4858; /* Your secondary deep slate (titles) */
+  --color-body: #575752; /* Lighter slate for paragraphs */
+  --color-fg-brand-strong: #9a3412; /* Darkest orange for text contrast */
+  --color-fg-yellow: #fbbf24; /* For rating stars */
+
+  /* --- C. TYPOGRAPHY & SHAPES --- */
+  --font-sans: 'Plus Jakarta Sans', sans-serif;
+  --font-serif: 'Playfair Display', serif;
+
+  /* --- Shapes (The "Base" Roundness) --- */
+  /* This forces the soft curve across all modern components */
+  --radius-base: 1rem;
+
+  /* --- D. HOVERS, TERTIARY STATES & INTERACTIVE INPUTS --- */
+  /* These are critical for making the detailed modern header hovers function.
+     We derive these from your slate color (#2f4858) but with transparency. */
+  --color-neutral-secondary-medium: rgba(47, 72, 88, 0.1);
+  --color-neutral-secondary-soft: rgba(47, 72, 88, 0.05);
+  --color-neutral-tertiary-medium: rgba(47, 72, 88, 0.15);
+  --color-neutral-tertiary: rgba(47, 72, 88, 0.2);
+}
+
+@layer base {
+  body {
+    /* Uses soft stone background, not dark gray/blue */
+    @apply font-sans bg-stone-50 antialiased text-body;
+  }
+
+  /* Force Playfair Display on titles/headings used in the modern theme */
+  h1,
+  h2,
+  h3,
+  h4,
+  .font-heading,
+  .text-heading {
+    @apply font-serif text-heading;
+  }
+
+  /* Keep h5 separate if needed, though covered by above */
+  h5 {
+    @apply font-serif text-heading;
+  }
+}

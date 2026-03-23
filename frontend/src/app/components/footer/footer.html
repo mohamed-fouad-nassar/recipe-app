@@ -1,0 +1,23 @@
+<footer class="w-full p-4 mt-12">
+  <div
+    class="max-w-7xl mx-auto p-6 md:p-10 bg-neutral-primary-soft rounded-base shadow-xs border border-default"
+  >
+    <div class="sm:flex sm:items-center sm:justify-between">
+      <a routerLink="/" class="flex items-center mb-4 sm:mb-0 rtl:space-x-reverse">
+        <img src="/imgs/logo-1.png" class="h-11" alt="Logo" />
+      </a>
+      <ul class="flex flex-wrap items-center mb-6 text-sm font-medium text-body sm:mb-0">
+        @for (link of links; track $index) {
+          <li>
+            <a [routerLink]="link.href" class="hover:underline me-4 md:me-6">{{ link.title }}</a>
+          </li>
+        }
+      </ul>
+    </div>
+    <hr class="my-6 border-default sm:mx-auto lg:my-8" />
+    <span class="block text-sm text-body sm:text-center"
+      >© {{ year() }} <a routerLink="/" class="hover:underline">Recipes to share</a>. All Rights
+      Reserved.</span
+    >
+  </div>
+</footer>
