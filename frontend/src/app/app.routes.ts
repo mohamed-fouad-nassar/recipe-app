@@ -6,14 +6,16 @@ import { AuthLayout } from './layouts/auth-layout';
 
 // pages
 import { Home } from './pages/home/home';
+import { Login } from './pages/login/login';
+import { Register } from './pages/register/register';
 
 export const routes: Routes = [
   {
     path: 'auth',
     component: AuthLayout,
     children: [
-      { path: 'login', component: Home },
-      { path: 'register', component: Home },
+      { path: 'login', component: Login },
+      { path: 'register', component: Register },
     ],
   },
   {
