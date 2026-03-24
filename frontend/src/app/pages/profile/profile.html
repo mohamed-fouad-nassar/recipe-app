@@ -1,0 +1,170 @@
+<main class="max-w-7xl mx-auto py-8">
+  <section
+    class="bg-neutral-primary border border-default rounded-base shadow-xl overflow-hidden mb-12"
+  >
+    <div class="h-32 bg-brand-softer relative">
+      <div
+        class="absolute inset-0 opacity-20"
+        style="
+          background-image: radial-gradient(var(--color-brand) 1px, transparent 1px);
+          background-size: 20px 20px;
+        "
+      ></div>
+    </div>
+
+    <div class="px-8 pb-8">
+      <div class="relative flex flex-col md:flex-row md:items-end gap-6 -mt-12">
+        <div class="relative group">
+          <img
+            src="https://ui-avatars.com/api/?name=Chef+Mario&background=f26419&color=fff&size=128"
+            class="w-32 h-32 rounded-full border-4 border-white shadow-lg bg-white object-cover"
+          />
+          <button
+            class="absolute bottom-0 right-0 p-2 bg-heading text-white rounded-full hover:bg-brand transition-colors shadow-md"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+              />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <div class="flex-1">
+          <h1 class="text-3xl font-serif font-bold text-heading">Chef Mario Batali</h1>
+          <p class="text-body text-sm mb-2">@mario_cooks • Joined March 2026</p>
+          <div class="flex gap-4">
+            <span class="text-sm font-bold text-heading"
+              >12 <span class="text-body font-normal">Recipes</span></span
+            >
+            <span class="text-sm font-bold text-heading"
+              >1.4k <span class="text-body font-normal">Followers</span></span
+            >
+            <span class="text-sm font-bold text-heading"
+              >89 <span class="text-body font-normal">Following</span></span
+            >
+          </div>
+        </div>
+
+        <div class="flex gap-3">
+          <button
+            class="bg-neutral-primary-soft border border-default text-heading px-6 py-2 rounded-base font-bold hover:bg-neutral-secondary-soft transition-all text-sm"
+          >
+            Edit Profile
+          </button>
+          <button
+            class="bg-brand text-white px-6 py-2 rounded-base font-bold hover:bg-brand-strong transition-all text-sm shadow-md"
+          >
+            Add New Recipe
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="flex border-b border-default mb-8">
+    <button class="px-6 py-3 text-sm font-bold border-b-2 border-brand text-brand">
+      My Recipes
+    </button>
+    <button
+      class="px-6 py-3 text-sm font-medium text-body hover:text-heading border-b-2 border-transparent transition-all"
+    >
+      Favorites
+    </button>
+    <button
+      class="px-6 py-3 text-sm font-medium text-body hover:text-heading border-b-2 border-transparent transition-all"
+    >
+      Liked
+    </button>
+  </div>
+
+  <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+    @for (recipe of [1, 2, 3]; track $index) {
+      <div
+        class="bg-neutral-primary-soft border border-default rounded-base overflow-hidden group hover:shadow-lg transition-all"
+      >
+        <div class="relative aspect-video overflow-hidden">
+          <img
+            src="https://images.unsplash.com/photo-1473093226795-af9932fe5856?auto=format&fit=crop&q=80&w=600"
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+
+          <button
+            class="absolute top-3 right-3 p-1.5 bg-white/90 backdrop-blur rounded-full text-heading hover:text-brand shadow-sm"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <div class="p-6">
+          <div class="flex justify-between items-start mb-2">
+            <h3
+              class="text-xl font-serif font-bold text-heading group-hover:text-brand transition-colors"
+            >
+              Roasted Herb Chicken
+            </h3>
+            <span class="bg-brand-softer text-brand text-[10px] font-bold px-2 py-1 rounded"
+              >Published</span
+            >
+          </div>
+          <div class="flex items-center gap-4 text-xs text-body font-medium">
+            <span class="flex items-center gap-1">
+              <svg class="w-3 h-3 fill-brand" viewBox="0 0 20 20">
+                <path
+                  d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z"
+                />
+              </svg>
+              450 Likes
+            </span>
+            <span class="flex items-center gap-1">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
+                />
+              </svg>
+              24 Comments
+            </span>
+          </div>
+        </div>
+      </div>
+    }
+
+    <button
+      class="border-2 border-dashed border-default rounded-base flex flex-col items-center justify-center p-8 group hover:border-brand transition-colors min-h-75"
+    >
+      <div
+        class="w-12 h-12 bg-stone-100 text-body rounded-full flex items-center justify-center mb-4 group-hover:bg-brand-softer group-hover:text-brand transition-all"
+      >
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 4v16m8-8H4"
+          />
+        </svg>
+      </div>
+      <span class="font-bold text-heading">Share a New Recipe</span>
+      <p class="text-xs text-body mt-1">Inspire the community today.</p>
+    </button>
+  </div>
+</main>
