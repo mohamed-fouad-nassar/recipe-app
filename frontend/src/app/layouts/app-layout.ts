@@ -14,8 +14,8 @@ export interface ILink {
   standalone: true,
   template: `
     <app-header [links]="links" />
-    <main class="min-h-screen pt-27.5">
-      <div class="max-w-7xl mx-auto p-4">
+    <main class="min-h-screen px-4 pt-27.5">
+      <div class="max-w-7xl mx-auto">
         <router-outlet />
       </div>
     </main>

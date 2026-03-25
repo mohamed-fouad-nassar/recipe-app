@@ -1,0 +1,141 @@
+<main class="max-w-7xl mx-auto py-8">
+  <div class="text-center mb-12">
+    <nav
+      class="flex justify-center gap-2 text-xs font-bold text-body uppercase tracking-widest mb-4"
+    >
+      <a href="#" class="hover:text-brand">Recipes</a>
+      <span>/</span>
+      <a href="#" class="hover:text-brand">Pasta</a>
+    </nav>
+    <h1 class="text-4xl md:text-6xl font-serif font-bold text-heading mb-6">
+      The Ultimate Spicy Rigatoni
+    </h1>
+
+    <div class="flex flex-wrap justify-center items-center gap-6">
+      <div class="flex items-center gap-2">
+        <img src="https://ui-avatars.com/api/?name=Chef+Mario" class="w-8 h-8 rounded-full" />
+        <span class="text-sm font-medium text-heading">By Chef Mario</span>
+      </div>
+      <div class="h-4 w-px bg-default hidden md:block"></div>
+      <div class="flex items-center gap-4">
+        <button class="flex items-center gap-2 group">
+          <svg
+            class="w-6 h-6 group-hover:fill-brand transition-all"
+            [class.fill-brand]="isLiked"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+            />
+          </svg>
+          <span class="text-sm font-bold text-heading">1,204 Likes</span>
+        </button>
+        <button class="flex items-center gap-2 group">
+          <svg
+            class="w-6 h-6 group-hover:text-brand transition-all"
+            [class.text-brand]="isFavorite"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" />
+          </svg>
+          <span class="text-sm font-bold text-heading">Save</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-5xl mx-auto rounded-base overflow-hidden shadow-sm mb-16 aspect-video">
+    <img
+      src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&q=80&w=1200"
+      class="w-full h-full object-cover"
+    />
+  </div>
+
+  <div class="grid lg:grid-cols-3 px-4 gap-12">
+    <aside class="lg:col-span-1">
+      <div class="bg-neutral-primary-soft border border-default rounded-base p-8 sticky top-32">
+        <h3 class="text-xl font-serif font-bold text-heading mb-6 border-b border-default pb-4">
+          Ingredients
+        </h3>
+        <ul class="space-y-4">
+          @for (
+            item of [
+              '500g Rigatoni',
+              '2tbsp Olive Oil',
+              '3 cloves Garlic',
+              '1tsp Chili Flakes',
+              '1/2 cup Heavy Cream',
+            ];
+            track item
+          ) {
+            <li class="flex items-start gap-3">
+              <input
+                type="checkbox"
+                class="mt-1 w-4 h-4 text-brand bg-stone-50 border-default rounded focus:ring-brand"
+              />
+              <span class="text-body text-sm">{{ item }}</span>
+            </li>
+          }
+        </ul>
+      </div>
+    </aside>
+
+    <div class="lg:col-span-2 space-y-12">
+      <h3 class="text-3xl font-serif font-bold text-heading">Instructions</h3>
+      @for (step of [1, 2, 3]; track step) {
+        <div class="flex gap-6">
+          <span
+            class="shrink-0 w-10 h-10 bg-brand text-white rounded-full flex items-center justify-center font-bold"
+          >
+            {{ step }}
+          </span>
+          <div>
+            <h4 class="text-lg font-bold text-heading mb-2">Preparation Step {{ step }}</h4>
+            <p class="text-body leading-relaxed">
+              Bring a large pot of salted water to a boil. Cook the rigatoni according to package
+              instructions until al dente. Reserve 1 cup of pasta water before draining.
+            </p>
+          </div>
+        </div>
+      }
+
+      <section class="pt-16 border-t border-default">
+        <h3 class="text-2xl font-serif font-bold text-heading mb-8">Community Comments (12)</h3>
+
+        <div class="mb-10">
+          <textarea
+            class="w-full bg-white border border-default rounded-base p-4 focus:ring-2 focus:ring-brand-medium focus:border-brand outline-none text-heading mb-4"
+            placeholder="Share your experience..."
+          ></textarea>
+          <button
+            class="bg-heading text-white px-6 py-2 rounded-base font-bold hover:bg-brand transition-all"
+          >
+            Post Comment
+          </button>
+        </div>
+
+        <div class="space-y-8">
+          <div class="flex gap-4 p-4 rounded-base bg-neutral-primary-soft border border-default">
+            <img src="https://ui-avatars.com/api/?name=User+One" class="w-10 h-10 rounded-full" />
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <span class="font-bold text-heading text-sm">Sarah Jenkins</span>
+                <span class="text-[10px] text-body uppercase tracking-wider">2 days ago</span>
+              </div>
+              <p class="text-body text-sm">
+                Followed this exactly and it was a hit! Added a bit of lemon zest at the end for
+                extra brightness.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>

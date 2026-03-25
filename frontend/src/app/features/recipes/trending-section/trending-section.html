@@ -1,0 +1,23 @@
+<section class="bg-brand text-white rounded-base p-8 md:p-12 shadow-xl relative overflow-hidden">
+  <div class="absolute -right-20 -top-20 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+
+  <div class="grid md:grid-cols-2 gap-12 items-center relative z-10">
+    <div>
+      <h2 class="text-4xl font-serif font-bold mb-6">Recipe of the Month</h2>
+      <h3 class="text-2xl font-bold mb-4 italic">"The Ultimate Spicy Rigatoni"</h3>
+      <p class="text-orange-50 mb-8 leading-relaxed">
+        A creamy, bold, and slightly spicy pasta dish that takes less than 20 minutes to prepare.
+        Perfect for busy weeknights or impressive dates.
+      </p>
+      <a
+        routerLink="/recipes/1"
+        class="bg-white text-brand px-6 py-3 rounded-base font-bold hover:bg-neutral-primary transition-all"
+      >
+        Get the Recipe
+      </a>
+    </div>
+    <div class="bg-white p-2 rounded-base rotate-3 shadow-2xl">
+      <img src="/imgs/trending.avif" class="rounded-lg w-full" alt="trending recipe" />
+    </div>
+  </div>
+</section>

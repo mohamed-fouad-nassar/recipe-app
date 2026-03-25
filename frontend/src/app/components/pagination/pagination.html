@@ -1,0 +1,55 @@
+<nav class="flex flex-col items-center justify-center space-y-4 py-8">
+  <ul class="inline-flex items-center gap-1 sm:gap-2">
+    <li>
+      <button
+        (click)="goToPage(currentPage - 1)"
+        [disabled]="currentPage === 1"
+        class="flex items-center justify-center w-10 h-10 bg-neutral-primary-soft border border-default rounded-base hover:bg-neutral-secondary-soft disabled:opacity-30"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 16 16">
+          <path stroke-width="2" d="M11 1L5 8l6 7" />
+        </svg>
+      </button>
+    </li>
+
+    @for (page of pages; track page) {
+      <li class="hidden sm:block">
+        <button
+          (click)="goToPage(page)"
+          [ngClass]="
+            page === currentPage ? 'bg-brand text-white' : 'bg-neutral-primary-soft text-heading'
+          "
+          class="flex items-center justify-center w-10 h-10 border rounded-base font-bold transition-all"
+        >
+          {{ page }}
+        </button>
+      </li>
+    }
+
+    <li class="sm:hidden px-4 text-sm font-bold text-heading">
+      Page {{ currentPage }} / {{ totalPages }}
+    </li>
+
+    <li>
+      <button
+        (click)="goToPage(currentPage + 1)"
+        [disabled]="currentPage === totalPages"
+        class="flex items-center justify-center w-10 h-10 bg-neutral-primary-soft border border-default rounded-base hover:bg-neutral-secondary-soft disabled:opacity-30"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 16 16">
+          <path stroke-width="2" d="M5 1l6 7-6 7" />
+        </svg>
+      </button>
+    </li>
+  </ul>
+
+  <span class="text-sm font-normal text-body">
+    Showing
+    <span class="font-bold text-heading">{{ showingFrom }}</span>
+    to
+    <span class="font-bold text-heading">{{ showingTo }}</span>
+    of
+    <span class="font-bold text-heading">{{ totalItems }}</span>
+    recipes
+  </span>
+</nav>

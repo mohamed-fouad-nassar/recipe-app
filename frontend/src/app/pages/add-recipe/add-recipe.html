@@ -1,0 +1,16 @@
+<main class="max-w-5xl mx-auto py-16">
+  <section class="mb-12">
+    <h1 class="text-4xl font-serif font-bold text-heading mb-2">Create New Recipe</h1>
+    <p class="text-body">Share your culinary masterpiece with the community.</p>
+  </section>
+
+  <section
+    class="bg-neutral-primary border border-default rounded-base shadow-xs p-8 md:p-12 relative overflow-hidden"
+  >
+    <div
+      class="absolute -top-24 -right-24 w-64 h-64 bg-brand-softer rounded-full blur-3xl opacity-40"
+    ></div>
+
+    <app-recipe-form (submitForm)="handleCreate($event)" (cancel)="goBack()"></app-recipe-form>
+  </section>
+</main>
