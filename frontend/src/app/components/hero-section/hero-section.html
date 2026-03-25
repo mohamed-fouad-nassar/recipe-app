@@ -1,0 +1,38 @@
+<section
+  class="relative bg-neutral-primary-soft border border-default rounded-base shadow-xs overflow-hidden"
+>
+  <div class="grid lg:grid-cols-2 items-center">
+    <div class="p-8 md:p-16 lg:p-20">
+      <span class="text-brand font-bold tracking-widest uppercase text-xs mb-4 block"
+        >Trending this week</span
+      >
+      <h1 class="text-5xl md:text-7xl font-serif font-bold text-heading leading-[1.1] mb-6">
+        Master the Art of <span class="text-brand">Home Cooking.</span>
+      </h1>
+      <p class="text-body text-lg mb-10 max-w-md">
+        Explore over 1,200+ triple-tested recipes designed for real life and real flavor.
+      </p>
+      <div class="flex flex-wrap gap-4">
+        <a
+          routerLink="/recipes"
+          class="bg-brand text-white px-8 py-4 rounded-base font-bold hover:bg-brand-strong shadow-lg transition-all"
+        >
+          Explore Recipes
+        </a>
+        <a
+          routerLink="/about"
+          class="border border-default text-heading px-8 py-4 rounded-base font-bold hover:bg-neutral-secondary-soft transition-all"
+        >
+          Our Story
+        </a>
+      </div>
+    </div>
+    <div class="relative h-64 lg:h-full min-h-100">
+      <img
+        src="/imgs/hero.avif"
+        class="absolute inset-0 w-full h-full object-cover"
+        alt="Delicious Food"
+      />
+    </div>
+  </div>
+</section>
