@@ -1,3 +1,4 @@
+<!-- sorting -->
 <div class="max-w-7xl mx-auto py-8">
   <div
     class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-neutral-primary-soft p-6 border border-default rounded-base shadow-xs"
@@ -19,6 +20,7 @@
 </div>
 
 <main class="max-w-7xl mx-auto grid lg:grid-cols-4 gap-8 mb-24">
+  <!-- filter -->
   <aside class="lg:col-span-1 space-y-8">
     <div>
       <h3 class="text-heading font-bold uppercase tracking-widest text-xs mb-4">Cuisine</h3>
@@ -36,59 +38,23 @@
     </div>
   </aside>
 
+  <!-- recipes -->
   <div class="lg:col-span-3 grid md:grid-cols-2 gap-6">
     @for (recipe of [1, 2, 3, 4, 5, 6]; track $index) {
-      <div
-        class="group bg-neutral-primary border border-default rounded-base overflow-hidden hover:shadow-xl transition-all"
-      >
-        <div class="relative aspect-4/3 overflow-hidden">
-          <img
-            src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&q=80&w=600"
-            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-          />
-          <button
-            class="absolute top-4 right-4 p-2 bg-white/90 backdrop-blur rounded-full text-heading hover:text-brand shadow-md transition-colors"
-          >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-              />
-            </svg>
-          </button>
-        </div>
-        <div class="p-6">
-          <span class="text-brand font-bold text-[10px] uppercase tracking-widest"
-            >Dinner • 20 Mins</span
-          >
-          <a routerLink="/recipes/1">
-            <h3
-              class="text-xl font-serif font-bold text-heading mt-2 mb-4 group-hover:text-brand transition-colors"
-            >
-              Creamy Garlic Pasta
-            </h3>
-          </a>
-          <div class="flex items-center justify-between border-t border-default pt-4">
-            <div class="flex items-center gap-2">
-              <img
-                src="https://ui-avatars.com/api/?name=Chef+Mario&background=f26419&color=fff"
-                class="w-6 h-6 rounded-full"
-              />
-              <span class="text-xs text-body font-medium">Chef Mario</span>
-            </div>
-            <span class="text-xs text-body flex items-center gap-1">
-              <svg class="w-4 h-4 fill-brand" viewBox="0 0 20 20">
-                <path
-                  d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z"
-                />
-              </svg>
-              1.2k
-            </span>
-          </div>
-        </div>
-      </div>
+      <app-recipe-card
+        [data]="item"
+        (toggleLike)="handleLike(item.id)"
+        (toggleFavorite)="handleFavorite(item.id)"
+      />
     }
   </div>
+
+  <!-- pagination -->
 </main>
+
+<app-pagination
+  [totalItems]="144"
+  [pageSize]="12"
+  [currentPage]="current"
+  (pageChange)="onPageClick($event)"
+/>

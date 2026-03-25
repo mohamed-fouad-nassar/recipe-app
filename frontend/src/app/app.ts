@@ -1,6 +1,7 @@
+import { filter } from 'rxjs';
 import { initFlowbite } from 'flowbite';
-import { RouterOutlet } from '@angular/router';
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +11,13 @@ import { Component, OnInit, signal } from '@angular/core';
 export class App implements OnInit {
   protected readonly title = signal('frontend');
 
-  ngOnInit(): void {
-    initFlowbite();
+  private router = inject(Router);
+
+  ngOnInit() {
+    this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
+      setTimeout(() => {
+        initFlowbite();
+      }, 0);
+    });
   }
 }

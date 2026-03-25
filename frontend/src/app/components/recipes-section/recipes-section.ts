@@ -1,17 +1,14 @@
 import { Component } from '@angular/core';
-import { RecipeCard } from '../../components/recipe-card/recipe-card';
-import { PaginationComponent } from '../../components/pagination/pagination';
+import { RouterLink } from '@angular/router';
+import { RecipeCard } from '../recipe-card/recipe-card';
 
 @Component({
-  selector: 'app-recipes',
-  templateUrl: './recipes.html',
-  imports: [RecipeCard, PaginationComponent],
+  selector: 'app-recipes-section',
+  templateUrl: './recipes-section.html',
+  host: { class: 'block' },
+  imports: [RecipeCard, RouterLink],
 })
-export class Recipes {
-  recipes = Array.from({ length: 20 }, (_, i) => i + 1);
-  current = 1;
-  onPageClick = (page: number) => {};
-
+export class RecipesSection {
   handleLike(recipeId: string) {
     return '';
   }

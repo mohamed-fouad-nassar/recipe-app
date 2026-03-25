@@ -1,6 +1,6 @@
 <main class="max-w-7xl mx-auto py-8">
   <section
-    class="bg-neutral-primary border border-default rounded-base shadow-xl overflow-hidden mb-12"
+    class="bg-neutral-primary border border-default rounded-base shadow-md overflow-hidden mb-12"
   >
     <div class="h-32 bg-brand-softer relative">
       <div
@@ -61,11 +61,12 @@
           >
             Edit Profile
           </button>
-          <button
+          <a
+            routerLink="/recipes/add"
             class="bg-brand text-white px-6 py-2 rounded-base font-bold hover:bg-brand-strong transition-all text-sm shadow-md"
           >
             Add New Recipe
-          </button>
+          </a>
         </div>
       </div>
     </div>
@@ -88,67 +89,12 @@
   </div>
 
   <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-    @for (recipe of [1, 2, 3]; track $index) {
-      <div
-        class="bg-neutral-primary-soft border border-default rounded-base overflow-hidden group hover:shadow-lg transition-all"
-      >
-        <div class="relative aspect-video overflow-hidden">
-          <img
-            src="https://images.unsplash.com/photo-1473093226795-af9932fe5856?auto=format&fit=crop&q=80&w=600"
-            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-          />
-
-          <button
-            class="absolute top-3 right-3 p-1.5 bg-white/90 backdrop-blur rounded-full text-heading hover:text-brand shadow-sm"
-          >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"
-              />
-            </svg>
-          </button>
-        </div>
-
-        <div class="p-6">
-          <div class="flex justify-between items-start mb-2">
-            <h3
-              class="text-xl font-serif font-bold text-heading group-hover:text-brand transition-colors"
-            >
-              Roasted Herb Chicken
-            </h3>
-            <span class="bg-brand-softer text-brand text-[10px] font-bold px-2 py-1 rounded"
-              >Published</span
-            >
-          </div>
-          <div class="flex items-center gap-4 text-xs text-body font-medium">
-            <span class="flex items-center gap-1">
-              <svg class="w-3 h-3 fill-brand" viewBox="0 0 20 20">
-                <path
-                  d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z"
-                />
-              </svg>
-              450 Likes
-            </span>
-            <span class="flex items-center gap-1">
-              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
-                />
-              </svg>
-              24 Comments
-            </span>
-          </div>
-        </div>
-      </div>
+    @for (recipe of userRecipes(); track recipe.id) {
+      <app-profile-recipe-card [data]="recipe" (onDelete)="handleDelete($event)" />
     }
 
-    <button
+    <a
+      routerLink="/recipes/add"
       class="border-2 border-dashed border-default rounded-base flex flex-col items-center justify-center p-8 group hover:border-brand transition-colors min-h-75"
     >
       <div
@@ -165,6 +111,6 @@
       </div>
       <span class="font-bold text-heading">Share a New Recipe</span>
       <p class="text-xs text-body mt-1">Inspire the community today.</p>
-    </button>
+    </a>
   </div>
 </main>

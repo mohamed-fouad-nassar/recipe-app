@@ -1,0 +1,94 @@
+<div
+  class="group bg-neutral-primary border border-default rounded-base overflow-hidden hover:shadow-xl transition-all duration-300"
+>
+  <a [routerLink]="['/recipes', data().id]" class="relative block aspect-4/3 overflow-hidden">
+    <img
+      [src]="data().image"
+      [alt]="data().title"
+      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+    />
+
+    <button
+      (click)="$event.preventDefault(); $event.stopPropagation(); toggleFavorite.emit()"
+      class="absolute top-3 right-3 p-2 bg-white/90 backdrop-blur rounded-full shadow-sm transition-all active:scale-90"
+    >
+      <svg
+        class="w-5 h-5 transition-colors"
+        [ngClass]="data().isFavorite ? 'fill-brand text-brand' : 'text-heading hover:text-brand'"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+        />
+      </svg>
+    </button>
+  </a>
+
+  <div class="p-5">
+    <div
+      class="flex items-center justify-between gap-3 mb-3 text-[10px] font-bold uppercase tracking-widest"
+    >
+      <span class="text-brand bg-brand-softer px-2 py-0.5 rounded">{{ data().category }}</span>
+      <span class="text-body flex items-center gap-1">
+        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+        </svg>
+        {{ data().time }}
+      </span>
+    </div>
+
+    <a [routerLink]="['/recipes', data().id]" class="block">
+      <h3
+        class="text-xl font-serif font-bold text-heading mb-4 group-hover:text-brand transition-colors line-clamp-1"
+      >
+        {{ data().title }}
+      </h3>
+    </a>
+
+    <div class="pt-4 border-t border-default flex justify-between items-center">
+      <div class="flex items-center gap-2">
+        <img
+          [src]="
+            'https://ui-avatars.com/api/?name=' + data().author + '&background=f26419&color=fff'
+          "
+          class="w-6 h-6 rounded-full"
+        />
+        <span class="text-xs font-medium text-heading">{{ data().author }}</span>
+      </div>
+
+      <button
+        (click)="toggleLike.emit()"
+        class="flex items-center gap-1.5 px-2 py-1 rounded-md hover:bg-neutral-secondary-soft transition-colors group/like"
+      >
+        <svg
+          class="w-4 h-4 transition-all"
+          [ngClass]="
+            data().isLiked ? 'fill-brand text-brand' : 'text-body group-hover/like:text-brand'
+          "
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3zM7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"
+          />
+        </svg>
+        <span class="text-xs font-bold" [ngClass]="data().isLiked ? 'text-brand' : 'text-body'">
+          {{ data().likes }}
+        </span>
+      </button>
+    </div>
+  </div>
+</div>

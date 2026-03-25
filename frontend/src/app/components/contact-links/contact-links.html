@@ -1,0 +1,14 @@
+<div class="p-8 bg-neutral-primary-soft border border-default rounded-base shadow-xs mt-6">
+  <h4 class="text-heading font-bold uppercase tracking-widest text-xs mb-6">Join the Community</h4>
+  <div class="flex gap-4">
+    @for (link of links; track $index) {
+      <a
+        [href]="link.href"
+        [title]="link.title"
+        class="w-12 h-12 rounded-base bg-heading text-white flex items-center justify-center hover:bg-brand transition-all shadow-md"
+      >
+        <i class="{{ link.icon }}"></i>
+      </a>
+    }
+  </div>
+</div>
