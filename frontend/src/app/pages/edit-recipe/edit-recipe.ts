@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
-import { Recipe } from '../../models/recipes.model';
-import { RecipeFormComponent } from '../../components/recipe-form/recipe-form';
+import { Recipe } from '../../features/recipes/recipes.model';
+import { RecipeFormComponent } from '../../features/recipes/recipe-form/recipe-form';
 
 @Component({
   selector: 'app-edit-recipe',
@@ -11,7 +11,7 @@ export class EditRecipe {
   currentRecipe = signal<Recipe | null>(null);
 
   handleUpdate(formData: any) {
-    const id = this.currentRecipe()?.id;
+    const id = this.currentRecipe()?._id;
     if (!id) return;
     console.log('Updating Recipe:', id, formData);
   }

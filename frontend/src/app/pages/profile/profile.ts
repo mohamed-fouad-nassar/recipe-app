@@ -1,6 +1,6 @@
-import { Component, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { ProfileRecipeCard } from '../../components/profile-recipe-card/profile-recipe-card';
+import { Component, signal } from '@angular/core';
+import { ProfileRecipeCard } from '../../features/recipes/profile-recipe-card/profile-recipe-card';
 
 @Component({
   selector: 'app-profile',

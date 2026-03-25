@@ -1,6 +1,6 @@
+import { Recipe } from '../recipes.model';
 import { NgClass } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { Recipe } from '../../models/recipes.model';
 import { Component, input, output } from '@angular/core';
 
 @Component({

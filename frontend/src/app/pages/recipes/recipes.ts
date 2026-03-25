@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RecipeCard } from '../../components/recipe-card/recipe-card';
+import { RecipeCard } from '../../features/recipes/recipe-card/recipe-card';
 import { PaginationComponent } from '../../components/pagination/pagination';
 
 @Component({

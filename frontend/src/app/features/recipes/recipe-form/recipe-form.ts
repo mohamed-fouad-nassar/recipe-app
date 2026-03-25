@@ -1,4 +1,4 @@
-import { Recipe } from '../../models/recipes.model';
+import { Recipe } from '../recipes.model';
 import { CommonModule } from '@angular/common';
 import { Component, input, output, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -21,8 +21,8 @@ export class RecipeFormComponent implements OnInit {
   ngOnInit() {
     this.recipeForm = this.fb.group({
       title: [this.initialData()?.title || '', [Validators.required, Validators.minLength(3)]],
-      category: [this.initialData()?.category || 'General', Validators.required],
-      time: [this.initialData()?.time || '', Validators.required],
+      // category: [this.initialData()?.category || 'General', Validators.required],
+      // time: [this.initialData()?.time || '', Validators.required],
       image: [this.initialData()?.image || '', Validators.required],
       description: [''],
     });
