@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Recipe } from '../../models/recipes.model';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { Recipe } from '../../features/recipes/recipes.model';
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { RecipeCard } from '../../components/recipe-card/recipe-card';
+import { RecipeCard } from '../../features/recipes/recipe-card/recipe-card';
 
 @Component({
   selector: 'app-search-',
@@ -36,19 +36,7 @@ export class Search implements OnInit {
     //   error: () => this.isLoading.set(false),
     // });
     new Promise((resolve) => setTimeout(resolve, 1000));
-    this.results.set([
-      {
-        id: '1',
-        image: '/imgs/recipe-1.avif',
-        title: 'Creamy Garlic Pasta',
-        category: 'Dinner',
-        author: 'Chef Mario',
-        time: '13 Min',
-        likes: 12,
-        isLiked: true,
-        isFavorite: false,
-      },
-    ]);
+    this.results.set([]);
     this.isLoading.set(false);
   }
 }

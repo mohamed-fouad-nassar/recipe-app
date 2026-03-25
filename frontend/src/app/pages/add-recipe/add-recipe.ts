@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RecipeFormComponent } from '../../components/recipe-form/recipe-form';
+import { RecipeFormComponent } from '../../features/recipes/recipe-form/recipe-form';
 
 @Component({
   selector: 'app-add-recipe',
