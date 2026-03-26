@@ -5,11 +5,10 @@
 
   @if (loading()) {
     <app-spinner message="Loading home recipes..." />
-  }
-  @if (error()) {
+  } @else if (error()) {
     <app-error-message [message]="error()" />
   } @else {
-    @if (!loading() && recipes().length > 0) {
+    @if (recipes().length && recipes().length > 0) {
       <div class="grid md:grid-cols-3 gap-8">
         @for (recipe of recipes(); track recipe._id) {
           <app-recipe-card
@@ -19,9 +18,8 @@
           />
         }
       </div>
-    }
-    @if (!loading() && recipes().length === 0) {
-      <p>No recipes found</p>
+    } @else {
+      <p class="italic text-xl py-16 text-body-subtle text-center">No recipes found</p>
     }
   }
   <div class="pt-20 w-fit mx-auto">

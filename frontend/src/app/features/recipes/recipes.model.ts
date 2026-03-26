@@ -14,6 +14,7 @@ export interface Recipe {
   _id: string;
   title: string;
   description: string;
+  category: string;
   image: string;
   likesCount: number;
   createdAt: string;

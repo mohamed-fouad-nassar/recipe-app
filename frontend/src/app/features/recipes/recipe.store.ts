@@ -9,6 +9,14 @@ export class RecipeStore {
   loading = signal(false);
   error = signal<string | null>(null);
 
+  filters = signal({
+    page: 1,
+    limit: 12,
+    category: '',
+  });
+
+  total = signal(0);
+
   setLoading(value: boolean) {
     this.loading.set(value);
   }

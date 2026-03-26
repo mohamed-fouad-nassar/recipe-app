@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { HomeRecipesResponse } from './recipes.model';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +12,16 @@ export class RecipeService {
 
   fetchHomeRecipes(): Observable<HomeRecipesResponse> {
     return this.http.get<HomeRecipesResponse>(`${this.baseUrl}/recipes?page=1&limit=3`);
+  }
+
+  fetchAllRecipes(options: { page?: number; limit?: number; category?: string }) {
+    let params = new HttpParams();
+
+    if (options.page) params = params.set('page', options.page);
+    if (options.limit) params = params.set('limit', options.limit);
+    if (options.category) params = params.set('category', options.category);
+
+    return this.http.get<any>(`${this.baseUrl}/recipes`, { params });
   }
 
   likeRecipe(id: string) {
