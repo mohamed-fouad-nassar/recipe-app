@@ -27,7 +27,7 @@ export const createRecipe = catchAsync(
     return res.status(201).json({
       status: httpStatus.SUCCESS,
       message: "Recipe created successfully",
-      data: recipe,
+      data: { recipe },
     });
   },
 );
@@ -38,7 +38,7 @@ export const getRecipeById = catchAsync(
     return res.json({
       status: httpStatus.SUCCESS,
       message: "Recipe fetched successfully",
-      data: recipe,
+      data: { recipe },
     });
   },
 );
@@ -53,7 +53,7 @@ export const updateRecipe = catchAsync(
     return res.json({
       status: httpStatus.SUCCESS,
       message: "Recipe updated successfully",
-      data: recipe,
+      data: { recipe },
     });
   },
 );

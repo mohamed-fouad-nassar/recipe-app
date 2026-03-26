@@ -1,20 +1,46 @@
 import { Observable } from 'rxjs';
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { HomeRecipesResponse, PaginatedResponse, Recipe } from './recipes.model';
+import { HomeRecipesResponse, RecipeDetails } from './recipes.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RecipeService {
   private http = inject(HttpClient);
-  private baseUrl = 'http://localhost:5000/api/recipes';
+  private baseUrl = 'http://localhost:5000/api';
 
   fetchHomeRecipes(): Observable<HomeRecipesResponse> {
-    return this.http.get<HomeRecipesResponse>(`${this.baseUrl}?page=1&limit=3`);
+    return this.http.get<HomeRecipesResponse>(`${this.baseUrl}/recipes?page=1&limit=3`);
   }
 
-  // fetchTrendingRecipes(): Observable<Recipe[]> {
-  //   return this.http.get<Recipe[]>(`${this.baseUrl}/trending`);
-  // }
+  fetchAllRecipes(options: { page?: number; limit?: number; category?: string }) {
+    let params = new HttpParams();
+
+    if (options.page) params = params.set('page', options.page);
+    if (options.limit) params = params.set('limit', options.limit);
+    if (options.category) params = params.set('category', options.category);
+
+    return this.http.get<any>(`${this.baseUrl}/recipes`, { params });
+  }
+
+  fetchRecipeById(id: string) {
+    return this.http.get<{ data: { recipe: RecipeDetails } }>(`${this.baseUrl}/recipes/${id}`);
+  }
+
+  likeRecipe(id: string) {
+    return this.http.post(`${this.baseUrl}/likes/${id}`, {});
+  }
+
+  unlikeRecipe(id: string) {
+    return this.http.delete(`${this.baseUrl}/likes/${id}`);
+  }
+
+  favoriteRecipe(id: string) {
+    return this.http.post(`${this.baseUrl}/favorites/${id}`, {});
+  }
+
+  unfavoriteRecipe(id: string) {
+    return this.http.delete(`${this.baseUrl}/favorites/${id}`);
+  }
 }

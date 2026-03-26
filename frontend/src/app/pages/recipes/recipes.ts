@@ -1,34 +1,55 @@
-import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Component, inject, OnInit } from '@angular/core';
+import { Spinner } from '../../components/spinner/spinner';
+import { RecipeFacade } from '../../features/recipes/recipe.facade';
 import { RecipeCard } from '../../features/recipes/recipe-card/recipe-card';
 import { PaginationComponent } from '../../components/pagination/pagination';
+import { ErrorMessageComponent } from '../../components/error-message/error-message';
 
 @Component({
   selector: 'app-recipes',
   templateUrl: './recipes.html',
-  imports: [RecipeCard, PaginationComponent],
+  imports: [RecipeCard, PaginationComponent, Spinner, ErrorMessageComponent],
 })
-export class Recipes {
-  recipes = Array.from({ length: 20 }, (_, i) => i + 1);
-  current = 1;
-  onPageClick = (page: number) => {};
+export class Recipes implements OnInit {
+  facade = inject(RecipeFacade);
+  route = inject(ActivatedRoute);
+  router = inject(Router);
 
-  handleLike(recipeId: string) {
-    return '';
+  recipes = this.facade.recipes;
+  loading = this.facade.store.loading;
+  error = this.facade.store.error;
+  total = this.facade.store.total;
+  filters = this.facade.store.filters;
+
+  ngOnInit() {
+    this.route.queryParams.subscribe((params) => {
+      this.facade.store.filters.set({
+        page: +params['page'] || 1,
+        limit: +params['limit'] || 12,
+        category: params['category'] || '',
+      });
+
+      this.facade.loadRecipes();
+    });
   }
 
-  handleFavorite(recipeId: string) {
-    return '';
+  onPageClick(page: number) {
+    this.router.navigate([], {
+      queryParams: {
+        ...this.filters(),
+        page,
+      },
+    });
   }
 
-  item = {
-    id: '1',
-    image: '/imgs/recipe-1.avif',
-    title: 'Creamy Garlic Pasta',
-    category: 'Dinner',
-    author: 'Chef Mario',
-    time: '13 Min',
-    likes: 12,
-    isLiked: true,
-    isFavorite: false,
-  };
+  onCategoryChange(category: string) {
+    this.router.navigate([], {
+      queryParams: {
+        ...this.filters(),
+        category,
+        page: 1,
+      },
+    });
+  }
 }

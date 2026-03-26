@@ -1,50 +1,24 @@
-import { catchError, of } from 'rxjs';
 import { RouterLink } from '@angular/router';
-import { RecipeService } from '../recipes.service';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { RecipeFacade } from '../recipe.facade';
 import { RecipeCard } from '../recipe-card/recipe-card';
-import { Component, computed, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { Spinner } from '../../../components/spinner/spinner';
+import { ErrorMessageComponent } from '../../../components/error-message/error-message';
 
 @Component({
   selector: 'app-recipes-section',
   templateUrl: './recipes-section.html',
   host: { class: 'block' },
-  imports: [RecipeCard, RouterLink],
+  imports: [RecipeCard, RouterLink, Spinner, ErrorMessageComponent],
 })
-export class RecipesSection {
-  handleLike(recipeId: string) {
-    console.log(recipeId, 'in like');
+export class RecipesSection implements OnInit {
+  facade = inject(RecipeFacade);
 
-    return '';
+  recipes = this.facade.recipes;
+  loading = this.facade.store.loading;
+  error = this.facade.store.error;
+
+  ngOnInit() {
+    this.facade.loadHomeRecipes();
   }
-
-  handleFavorite(recipeId: string) {
-    console.log(recipeId, 'in favorite');
-
-    return '';
-  }
-
-  private recipeService = inject(RecipeService);
-
-  response = toSignal(
-    this.recipeService.fetchHomeRecipes().pipe(
-      catchError((err) => {
-        console.error(err);
-        return of({ error: true });
-      }),
-    ),
-    { initialValue: null },
-  );
-
-  recipes = computed(() => {
-    const res: any = this.response();
-    return res?.data?.recipes ?? [];
-  });
-
-  loading = computed(() => this.response() === null);
-
-  error = computed(() => {
-    const res: any = this.response();
-    return res?.error ? 'Failed to load recipes' : '';
-  });
 }

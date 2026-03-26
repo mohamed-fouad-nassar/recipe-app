@@ -4,29 +4,23 @@
   </h2>
 
   @if (loading()) {
-    <p>Loading...</p>
-  }
-  @if (error()) {
-    <p class="text-red-500">{{ error() }}</p>
-  }
-  @if (!loading() && recipes().length > 0) {
-    <div class="grid md:grid-cols-3 gap-8">
-      @for (recipe of recipes(); track recipe._id) {
-        <app-recipe-card
-          [data]="recipe"
-          (toggleLike)="handleLike(recipe._id)"
-          (toggleFavorite)="handleFavorite(recipe._id)"
-        />
-        <!-- <div>
-          <img [src]="recipe.image" alt="" />
-          <h1>{{ recipe.title }}</h1>
-          <p>{{ recipe.description }}</p>
-        </div> -->
-      }
-    </div>
-  }
-  @if (!loading() && recipes().length === 0) {
-    <p>No recipes found</p>
+    <app-spinner message="Loading home recipes..." />
+  } @else if (error()) {
+    <app-error-message [message]="error()" />
+  } @else {
+    @if (recipes().length && recipes().length > 0) {
+      <div class="grid md:grid-cols-3 gap-8">
+        @for (recipe of recipes(); track recipe._id) {
+          <app-recipe-card
+            [data]="recipe"
+            (toggleLike)="facade.toggleLike(recipe)"
+            (toggleFavorite)="facade.toggleFavorite(recipe)"
+          />
+        }
+      </div>
+    } @else {
+      <p class="italic text-xl py-16 text-body-subtle text-center">No recipes found</p>
+    }
   }
   <div class="pt-20 w-fit mx-auto">
     <a

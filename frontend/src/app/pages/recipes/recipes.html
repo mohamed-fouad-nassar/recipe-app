@@ -1,60 +1,52 @@
-<!-- sorting -->
 <div class="max-w-7xl mx-auto py-8">
   <div
     class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-neutral-primary-soft p-6 border border-default rounded-base shadow-xs"
   >
     <div>
       <h1 class="text-3xl font-serif font-bold text-heading">All Recipes</h1>
-      <p class="text-body text-sm">Discover {{ recipes.length }} kitchen-tested favorites.</p>
+      <p class="text-body text-sm">Discover our kitchen-tested favorites.</p>
     </div>
     <div class="flex gap-2">
       <select
-        class="bg-stone-50 border border-default text-heading text-sm rounded-base focus:ring-brand focus:border-brand p-2.5"
+        #categorySelect
+        [value]="filters().category"
+        (change)="onCategoryChange(categorySelect.value)"
+        class="bg-stone-50 border border-default text-heading text-sm rounded-base p-2.5"
       >
-        <option>Latest First</option>
-        <option>Most Liked</option>
-        <option>Quickest</option>
+        <option value="" [selected]="filters().category === ''">All Categories</option>
+        @for (type of ['Dinner', 'Salad', 'Breakfast']; track type) {
+          <option [value]="type" [selected]="filters().category === type">{{ type }}</option>
+        }
       </select>
     </div>
   </div>
 </div>
 
-<main class="max-w-7xl mx-auto grid lg:grid-cols-4 gap-8 mb-24">
-  <!-- filter -->
-  <aside class="lg:col-span-1 space-y-8">
-    <div>
-      <h3 class="text-heading font-bold uppercase tracking-widest text-xs mb-4">Cuisine</h3>
-      <div class="space-y-2">
-        @for (type of ['Italian', 'Mexican', 'Asian', 'French']; track type) {
-          <label class="flex items-center gap-3 cursor-pointer group">
-            <input
-              type="checkbox"
-              class="w-4 h-4 text-brand bg-stone-50 border-default rounded focus:ring-brand"
-            />
-            <span class="text-body group-hover:text-brand transition-colors">{{ type }}</span>
-          </label>
+<main class="max-w-7xl mx-auto mb-24">
+  @if (loading()) {
+    <app-spinner message="Loading our recipes" />
+  } @else if (error()) {
+    <app-error-message [message]="error()" />
+  } @else {
+    @if (recipes().length && recipes().length > 0) {
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        @for (recipe of recipes(); track recipe._id) {
+          <app-recipe-card
+            [data]="recipe"
+            (toggleLike)="facade.toggleLike(recipe)"
+            (toggleFavorite)="facade.toggleFavorite(recipe)"
+          />
         }
       </div>
-    </div>
-  </aside>
-
-  <!-- recipes -->
-  <div class="lg:col-span-3 grid md:grid-cols-2 gap-6">
-    @for (recipe of [1, 2, 3, 4, 5, 6]; track $index) {
-      <app-recipe-card
-        [data]="item"
-        (toggleLike)="handleLike(item.id)"
-        (toggleFavorite)="handleFavorite(item.id)"
-      />
+    } @else {
+      <p class="italic text-xl py-16 text-body-subtle text-center">No recipes found</p>
     }
-  </div>
-
-  <!-- pagination -->
+  }
 </main>
 
 <app-pagination
-  [totalItems]="144"
-  [pageSize]="12"
-  [currentPage]="current"
+  [totalItems]="total()"
+  [pageSize]="filters().limit"
+  [currentPage]="filters().page"
   (pageChange)="onPageClick($event)"
 />
