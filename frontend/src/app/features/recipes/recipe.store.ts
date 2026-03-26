@@ -8,6 +8,7 @@ export class RecipeStore {
   recipes = signal<Recipe[]>([]);
   loading = signal(false);
   error = signal<string | null>(null);
+  selectedRecipe = signal<Recipe | null>(null);
 
   filters = signal({
     page: 1,
