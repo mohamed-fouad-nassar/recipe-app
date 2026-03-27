@@ -1,0 +1,89 @@
+<div class="flex gap-4 p-4 rounded-base bg-neutral-primary-soft border border-default">
+  <img
+    src="https://ui-avatars.com/api/?name=[object%20Object]&background=f26419&color=fff"
+    class="w-10 h-10 rounded-full"
+  />
+
+  <div class="flex-1">
+    <div class="flex items-center justify-between mb-1">
+      <div class="flex-1 flex items-center justify-between gap-2">
+        <span class="font-bold text-heading text-base">
+          {{ comment.userId.name }}
+          <span class="text-xs text-body-subtle ms-1">{{ comment.userId.email }}</span>
+        </span>
+
+        <span class="text-[10px] text-body uppercase tracking-wider">
+          {{ comment.createdAt | date: 'short' }}
+        </span>
+      </div>
+
+      @if (isOwner) {
+        <div class="flex gap-2">
+          <button (click)="edit.emit(comment)" class="text-xs text-blue-600 hover:underline">
+            Edit
+          </button>
+          <button
+            [attr.data-modal-target]="'deleteModal-' + comment._id"
+            [attr.data-modal-toggle]="'deleteModal-' + comment._id"
+            class="text-xs text-red-500 hover:underline"
+          >
+            Delete
+          </button>
+        </div>
+      }
+    </div>
+
+    <p class="text-body text-sm whitespace-pre-line">
+      {{ comment.content }}
+    </p>
+  </div>
+</div>
+
+<!-- delete modal -->
+<div
+  [id]="'deleteModal-' + comment._id"
+  tabindex="-1"
+  class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
+>
+  <div class="relative p-4 w-full max-w-md max-h-full">
+    <div class="relative bg-white rounded-base shadow">
+      <button
+        type="button"
+        class="absolute top-3 inset-e-2.5 text-gray-400 hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center"
+        [attr.data-modal-hide]="'deleteModal-' + comment._id"
+      >
+        ✕
+      </button>
+      <div class="p-4 md:p-5 text-center">
+        <svg
+          class="mx-auto mb-4 text-gray-400 w-12 h-12"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 20 20"
+        >
+          <path
+            stroke="currentColor"
+            stroke-width="2"
+            d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+        <h3 class="mb-5 text-lg font-normal text-heading">
+          Are you sure you want to delete this comment?
+        </h3>
+        <button
+          (click)="confirmDelete()"
+          [attr.data-modal-hide]="'deleteModal-' + comment._id"
+          class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-bold rounded-base text-sm inline-flex items-center px-5 py-2.5 transition-all"
+        >
+          Yes, delete it
+        </button>
+        <button
+          [attr.data-modal-hide]="'deleteModal-' + comment._id"
+          class="py-2.5 px-5 ms-3 text-sm font-medium text-heading bg-white border border-gray-200 rounded-base hover:bg-gray-100 hover:text-brand transition-all"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

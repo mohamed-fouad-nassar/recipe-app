@@ -1,5 +1,6 @@
 import { filter } from 'rxjs';
 import { initFlowbite } from 'flowbite';
+import { AuthService } from './features/auth/auth.service';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 
@@ -9,6 +10,10 @@ import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
   imports: [RouterOutlet],
 })
 export class App implements OnInit {
+  constructor(private auth: AuthService) {
+    this.auth.initUserFromStorage();
+  }
+
   protected readonly title = signal('frontend');
 
   private router = inject(Router);
