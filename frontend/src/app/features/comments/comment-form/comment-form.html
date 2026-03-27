@@ -1,0 +1,24 @@
+<div class="mb-10">
+  <textarea
+    [(ngModel)]="content"
+    class="w-full bg-white border border-default rounded-base p-4 focus:ring-2 focus:ring-brand-medium focus:border-brand outline-none text-heading mb-4 placeholder:text-body/60"
+    [placeholder]="isEdit ? 'Update your comment...' : 'Share your experience...'"
+  ></textarea>
+
+  <div class="flex gap-2">
+    <button
+      (click)="submit()"
+      class="bg-heading text-white px-6 py-2 rounded-base font-bold hover:bg-brand transition-all"
+    >
+      {{ isEdit ? 'Update Comment' : 'Post Comment' }}
+    </button>
+
+    <button
+      *ngIf="isEdit"
+      (click)="cancel.emit()"
+      class="px-4 py-2 rounded-base border border-default text-body hover:bg-neutral-primary-soft"
+    >
+      Cancel
+    </button>
+  </div>
+</div>

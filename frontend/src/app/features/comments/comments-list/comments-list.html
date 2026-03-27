@@ -1,0 +1,23 @@
+<section class="pt-8 mt-16 border-t border-default">
+  <h3 class="text-2xl font-serif font-bold text-heading mb-8">
+    Community Comments ({{ comments.length }})
+  </h3>
+  <app-comment-form (submitForm)="onAdd($event)"></app-comment-form>
+  <div class="space-y-6 mt-6">
+    <ng-container *ngFor="let c of comments">
+      <app-comment-card
+        [comment]="c"
+        [currentUserId]="currentUserId"
+        (edit)="startEdit($event)"
+        (delete)="onDelete($event)"
+      ></app-comment-card>
+      <app-comment-form
+        *ngIf="editingComment?._id === c._id"
+        [initialValue]="c.content"
+        [isEdit]="true"
+        (submitForm)="onUpdate(c._id, $event); cancelEdit()"
+        (cancel)="cancelEdit()"
+      ></app-comment-form>
+    </ng-container>
+  </div>
+</section>

@@ -1,4 +1,6 @@
 {{ logRecipe() }}
+{{ logUserId() }}
+{{ logComments() }}
 
 <main class="max-w-7xl mx-auto py-8">
   @if (loading()) {
@@ -109,8 +111,21 @@
           }
         </div>
       </div>
-      <!-- Comments section -->
-      <section class="pt-8 mt-16 border-t border-default">
+
+      <app-comments-list
+        [comments]="comments()"
+        [currentUserId]="currentUserId"
+        [onAdd]="addComment.bind(this)"
+        [onUpdate]="updateComment.bind(this)"
+        [onDelete]="deleteComment.bind(this)"
+      ></app-comments-list>
+    } @else {
+      <p class="italic text-xl py-16 text-body-subtle text-center">No recipe found</p>
+    }
+  }
+</main>
+
+<!-- <section class="pt-8 mt-16 border-t border-default">
         <h3 class="text-2xl font-serif font-bold text-heading mb-8">Community Comments (12)</h3>
 
         <div class="mb-10">
@@ -140,9 +155,4 @@
             </div>
           </div>
         </div>
-      </section>
-    } @else {
-      <p class="italic text-xl py-16 text-body-subtle text-center">No recipe found</p>
-    }
-  }
-</main>
+      </section> -->
