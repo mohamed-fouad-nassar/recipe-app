@@ -11,21 +11,19 @@
           {{ comment.userId.name }}
           <span class="text-xs text-body-subtle ms-1">{{ comment.userId.email }}</span>
         </span>
-
-        <span class="text-[10px] text-body uppercase tracking-wider">
-          {{ comment.createdAt | date: 'short' }}
-        </span>
       </div>
 
       @if (isOwner) {
-        <div class="flex gap-2">
-          <button (click)="edit.emit(comment)" class="text-xs text-blue-600 hover:underline">
+        <div class="inline-flex rounded-sm -space-x-px" role="group">
+          <button
+            (click)="edit.emit(comment)"
+            class="inline-flex items-center text-body bg-neutral-primary-soft border border-default hover:bg-neutral-secondary-medium hover:text-heading focus:ring-3 focus:ring-neutral-tertiary-soft font-medium leading-5 rounded-s-base text-xs px-3 py-1.5 focus:outline-none"
+          >
             Edit
           </button>
           <button
-            [attr.data-modal-target]="'deleteModal-' + comment._id"
-            [attr.data-modal-toggle]="'deleteModal-' + comment._id"
-            class="text-xs text-red-500 hover:underline"
+            (click)="openModal()"
+            class="inline-flex items-center text-white bg-danger box-border border-s border-danger-strong hover:bg-danger-strong focus:ring-3 focus:ring-danger-medium leading-5 rounded-e-base text-xs px-3 py-1.5 focus:outline-none"
           >
             Delete
           </button>
@@ -36,10 +34,13 @@
     <p class="text-body text-sm whitespace-pre-line">
       {{ comment.content }}
     </p>
+
+    <span class="text-[10px] text-body uppercase tracking-wider text-end block">
+      {{ comment.createdAt | date: 'short' }}
+    </span>
   </div>
 </div>
 
-<!-- delete modal -->
 <div
   [id]="'deleteModal-' + comment._id"
   tabindex="-1"
@@ -57,12 +58,15 @@
       <div class="p-4 md:p-5 text-center">
         <svg
           class="mx-auto mb-4 text-gray-400 w-12 h-12"
+          aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 20 20"
         >
           <path
             stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
             stroke-width="2"
             d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
           />
@@ -72,13 +76,12 @@
         </h3>
         <button
           (click)="confirmDelete()"
-          [attr.data-modal-hide]="'deleteModal-' + comment._id"
           class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-bold rounded-base text-sm inline-flex items-center px-5 py-2.5 transition-all"
         >
           Yes, delete it
         </button>
         <button
-          [attr.data-modal-hide]="'deleteModal-' + comment._id"
+          (click)="closeModal()"
           class="py-2.5 px-5 ms-3 text-sm font-medium text-heading bg-white border border-gray-200 rounded-base hover:bg-gray-100 hover:text-brand transition-all"
         >
           Cancel
