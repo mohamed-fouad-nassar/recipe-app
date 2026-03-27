@@ -37,7 +37,7 @@ export const createComment = async (
   if (!comment)
     throw new HttpError(400, httpStatus.FAIL, "Comment not created");
 
-  return comment;
+  return comment.populate({ path: "userId", select: "name email" });
 };
 
 export const updateComment = async (id: string, userId: string, data: any) => {
@@ -54,7 +54,7 @@ export const updateComment = async (id: string, userId: string, data: any) => {
   comment.content = data.content;
   await comment.save();
 
-  return comment;
+  return comment.populate({ path: "userId", select: "name email" });
 };
 
 export const deleteComment = async (
