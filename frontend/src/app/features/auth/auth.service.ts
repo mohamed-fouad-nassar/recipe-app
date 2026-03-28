@@ -4,7 +4,7 @@ import { Injectable, signal } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private baseUrl = 'http://localhost:5000/api/auth';
+  private baseUrl = 'http://localhost:5000/api';
 
   user = signal<any | null>(null);
   token = signal<string | null>(localStorage.getItem('token'));
@@ -14,18 +14,17 @@ export class AuthService {
   initUserFromStorage() {
     const token = this.token();
     const user = localStorage.getItem('user');
-
     if (!token || !user) return;
 
     try {
-      this.user.set(JSON.parse(user)); // ✅ full user restore
+      this.user.set(JSON.parse(user));
     } catch {
       this.clearSession();
     }
   }
 
   login(data: { email: string; password: string }) {
-    return this.http.post<any>(`${this.baseUrl}/login`, data, { withCredentials: true }).pipe(
+    return this.http.post<any>(`${this.baseUrl}/auth/login`, data, { withCredentials: true }).pipe(
       tap((res) => {
         this.token.set(res.data.token);
         localStorage.setItem('token', res.data.token);
@@ -36,12 +35,21 @@ export class AuthService {
   }
 
   register(data: { name: string; email: string; password: string }) {
-    return this.http.post<any>(`${this.baseUrl}/register`, data);
+    return this.http.post<any>(`${this.baseUrl}/auth/register`, data);
+  }
+
+  getProfile() {
+    return this.http.get<any>(`${this.baseUrl}/profile`).pipe(
+      tap((res) => {
+        this.user.set(res.data.user);
+        localStorage.setItem('user', JSON.stringify(res.data));
+      }),
+    );
   }
 
   logout() {
     return this.http
-      .post(`${this.baseUrl}/logout`, {}, { withCredentials: true })
+      .post(`${this.baseUrl}/auth/logout`, {}, { withCredentials: true })
       .pipe(tap(() => this.clearSession()));
   }
 
