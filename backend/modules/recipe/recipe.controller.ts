@@ -1,4 +1,5 @@
 import {
+  getRecipesByUser,
   updateRecipe as updateRecipeApi,
   createRecipe as createRecipeApi,
   removeRecipe as removeRecipeApi,
@@ -69,6 +70,17 @@ export const removeRecipe = catchAsync(
       status: httpStatus.SUCCESS,
       message: "Recipe deleted successfully",
       data: null,
+    });
+  },
+);
+
+export const getMyRecipes = catchAsync(
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    const recipes = await getRecipesByUser(req.user?.id as string);
+    return res.json({
+      status: httpStatus.SUCCESS,
+      message: "Recipes fetched successfully",
+      data: { recipes },
     });
   },
 );
