@@ -40,6 +40,7 @@ export class Recipes implements OnInit {
         ...this.filters(),
         page,
       },
+      queryParamsHandling: 'merge',
     });
   }
 

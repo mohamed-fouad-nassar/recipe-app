@@ -60,16 +60,4 @@ export class Recipe implements OnInit {
   deleteComment(commentId: string) {
     this.commentsFacade.deleteComment(commentId);
   }
-
-  logRecipe() {
-    console.log(this.recipe());
-  }
-
-  logComments() {
-    console.log(this.comments());
-  }
-
-  logUserId() {
-    console.log(this.currentUserId);
-  }
 }

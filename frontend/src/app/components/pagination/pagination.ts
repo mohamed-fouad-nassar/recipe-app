@@ -5,7 +5,6 @@ import { Component, Input, Output, EventEmitter, OnChanges } from '@angular/core
   selector: 'app-pagination',
   imports: [CommonModule],
   templateUrl: './pagination.html',
-  // host: { class: 'block mx-auto' },
 })
 export class PaginationComponent implements OnChanges {
   @Input() totalItems: number = 0;
