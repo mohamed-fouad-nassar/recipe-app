@@ -38,8 +38,10 @@ export class RecipeFacade {
 
     this.service.fetchAllRecipes({ page, limit, category }).subscribe({
       next: (res) => {
+        console.log(res.data);
+
         this.store.setRecipes(res.data.recipes);
-        this.store.total.set(res.total);
+        this.store.total.set(res.data.total);
         this.store.setLoading(false);
       },
       error: () => {

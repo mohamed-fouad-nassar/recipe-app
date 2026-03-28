@@ -42,7 +42,7 @@ export class AuthService {
     return this.http.get<any>(`${this.baseUrl}/profile`).pipe(
       tap((res) => {
         this.user.set(res.data.user);
-        localStorage.setItem('user', JSON.stringify(res.data));
+        localStorage.setItem('user', JSON.stringify(res.data.user));
       }),
     );
   }
@@ -54,7 +54,6 @@ export class AuthService {
   }
 
   getCurrentUserId(): string {
-    console.log('USER: __', this.user());
     return this.user()?._id || '';
   }
 
