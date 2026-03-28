@@ -5,5 +5,7 @@
       [showFavorite]="false"
       (toggleLike)="facade.toggleLike(recipe)"
     />
+  } @empty {
+    <p class="text-center text-body col-span-full">You haven't liked any recipes yet.</p>
   }
 </div>
