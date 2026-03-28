@@ -4,138 +4,146 @@ import HttpError from "../../common/utils/http-error";
 import { IRecipe, IRecipeWithFavorite } from "./recipe.types";
 import { httpStatus } from "../../common/constants/http-status";
 
-export const getAllRecipes = async (
-  query: any,
-  userId: string,
-): Promise<IRecipeWithFavorite[]> => {
+export const getAllRecipes = async (query: any, userId: string) => {
   const { search, category, page = 1, limit = 10 } = query;
+
   const match: any = {};
+
   if (search) match.title = { $regex: search, $options: "i" };
   if (category) match.category = { $regex: category, $options: "i" };
+
   const userObjectId = new mongoose.Types.ObjectId(userId);
 
   const pipeline: any[] = [
     { $match: match },
+
     {
-      $lookup: {
-        from: "favorites",
-        let: { recipeId: "$_id" },
-        pipeline: [
+      $facet: {
+        data: [
           {
-            $match: {
-              $expr: {
-                $eq: ["$recipeId", "$$recipeId"],
-              },
+            $lookup: {
+              from: "favorites",
+              let: { recipeId: "$_id" },
+              pipeline: [
+                { $match: { $expr: { $eq: ["$recipeId", "$$recipeId"] } } },
+                { $count: "count" },
+              ],
+              as: "favoritesCountData",
             },
           },
-          { $count: "count" },
-        ],
-        as: "favoritesCountData",
-      },
-    },
-    {
-      $lookup: {
-        from: "likes",
-        let: { recipeId: "$_id" },
-        pipeline: [
           {
-            $match: {
-              $expr: {
-                $eq: ["$recipeId", "$$recipeId"],
-              },
+            $lookup: {
+              from: "likes",
+              let: { recipeId: "$_id" },
+              pipeline: [
+                { $match: { $expr: { $eq: ["$recipeId", "$$recipeId"] } } },
+                { $count: "count" },
+              ],
+              as: "likesCountData",
             },
           },
-          { $count: "count" },
-        ],
-        as: "likesCountData",
-      },
-    },
-    {
-      $lookup: {
-        from: "favorites",
-        let: { recipeId: "$_id" },
-        pipeline: [
           {
-            $match: {
-              $expr: {
-                $and: [
-                  { $eq: ["$recipeId", "$$recipeId"] },
-                  { $eq: ["$userId", userObjectId] },
+            $lookup: {
+              from: "favorites",
+              let: { recipeId: "$_id" },
+              pipeline: [
+                {
+                  $match: {
+                    $expr: {
+                      $and: [
+                        { $eq: ["$recipeId", "$$recipeId"] },
+                        { $eq: ["$userId", userObjectId] },
+                      ],
+                    },
+                  },
+                },
+                { $limit: 1 },
+              ],
+              as: "isFavoriteData",
+            },
+          },
+          {
+            $lookup: {
+              from: "likes",
+              let: { recipeId: "$_id" },
+              pipeline: [
+                {
+                  $match: {
+                    $expr: {
+                      $and: [
+                        { $eq: ["$recipeId", "$$recipeId"] },
+                        { $eq: ["$userId", userObjectId] },
+                      ],
+                    },
+                  },
+                },
+                { $limit: 1 },
+              ],
+              as: "isLikedData",
+            },
+          },
+          {
+            $addFields: {
+              favoritesCount: {
+                $ifNull: [
+                  { $arrayElemAt: ["$favoritesCountData.count", 0] },
+                  0,
                 ],
               },
-            },
-          },
-          { $limit: 1 },
-        ],
-        as: "isFavoriteData",
-      },
-    },
-    {
-      $lookup: {
-        from: "likes",
-        let: { recipeId: "$_id" },
-        pipeline: [
-          {
-            $match: {
-              $expr: {
-                $and: [
-                  { $eq: ["$recipeId", "$$recipeId"] },
-                  { $eq: ["$userId", userObjectId] },
-                ],
+              likesCount: {
+                $ifNull: [{ $arrayElemAt: ["$likesCountData.count", 0] }, 0],
               },
+              isFavorite: { $gt: [{ $size: "$isFavoriteData" }, 0] },
+              isLiked: { $gt: [{ $size: "$isLikedData" }, 0] },
             },
           },
-          { $limit: 1 },
+          {
+            $project: {
+              favoritesCountData: 0,
+              likesCountData: 0,
+              isFavoriteData: 0,
+              isLikedData: 0,
+            },
+          },
+          {
+            $lookup: {
+              from: "users",
+              localField: "createdBy",
+              foreignField: "_id",
+              as: "createdBy",
+            },
+          },
+          { $unwind: "$createdBy" },
+          {
+            $project: {
+              "createdBy.password": 0,
+              "createdBy.__v": 0,
+              "createdBy.refreshToken": 0,
+              __v: 0,
+            },
+          },
+          { $sort: { createdAt: -1 } },
+          { $skip: (page - 1) * limit },
+          { $limit: Number(limit) },
         ],
-        as: "isLikedData",
+        total: [{ $count: "count" }],
       },
     },
     {
       $addFields: {
-        favoritesCount: {
-          $ifNull: [{ $arrayElemAt: ["$favoritesCountData.count", 0] }, 0],
+        total: {
+          $ifNull: [{ $arrayElemAt: ["$total.count", 0] }, 0],
         },
-        likesCount: {
-          $ifNull: [{ $arrayElemAt: ["$likesCountData.count", 0] }, 0],
-        },
-        isFavorite: { $gt: [{ $size: "$isFavoriteData" }, 0] },
-        isLiked: { $gt: [{ $size: "$isLikedData" }, 0] },
       },
     },
-    {
-      $project: {
-        favoritesCountData: 0,
-        likesCountData: 0,
-        isFavoriteData: 0,
-        isLikedData: 0,
-      },
-    },
-    {
-      $lookup: {
-        from: "users",
-        localField: "createdBy",
-        foreignField: "_id",
-        as: "createdBy",
-      },
-    },
-    { $unwind: "$createdBy" },
-    {
-      $project: {
-        "createdBy.password": 0,
-        "createdBy.__v": 0,
-        "createdBy.refreshToken": 0,
-        "createdBy.createdAt": 0,
-        "createdBy.updatedAt": 0,
-        __v: 0,
-      },
-    },
-    { $sort: { createdAt: -1 } },
-    { $skip: (page - 1) * limit },
-    { $limit: Number(limit) },
   ];
 
-  const recipes = await Recipe.aggregate<IRecipeWithFavorite>(pipeline);
-  return recipes;
+  const result = await Recipe.aggregate(pipeline);
+
+  return {
+    recipes: result[0]?.data || [],
+    total: result[0]?.total || 0,
+  };
 };
 
 export const createRecipe = async (

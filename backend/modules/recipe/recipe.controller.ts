@@ -13,11 +13,11 @@ import { httpStatus } from "../../common/constants/http-status";
 
 export const getAllRecipes = catchAsync(
   async (req: AuthRequest, res: Response, next: NextFunction) => {
-    const recipes = await getAllRecipesApi(req.query, req.user?.id);
+    const { recipes, total } = await getAllRecipesApi(req.query, req.user?.id);
     return res.json({
       status: httpStatus.SUCCESS,
       message: "Recipes fetched successfully",
-      data: { recipes },
+      data: { recipes, total },
     });
   },
 );
