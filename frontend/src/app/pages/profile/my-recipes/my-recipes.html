@@ -1,0 +1,20 @@
+<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+  @for (recipe of store.myRecipes(); track recipe._id) {
+    <app-profile-recipe-card [data]="recipe" />
+  }
+
+  <a
+    routerLink="/recipes/add"
+    class="border-2 border-dashed border-default rounded-base flex flex-col items-center justify-center p-8 group hover:border-brand transition-colors min-h-75"
+  >
+    <div
+      class="w-12 h-12 bg-stone-100 text-body rounded-full flex items-center justify-center mb-4 group-hover:bg-brand-softer group-hover:text-brand transition-all"
+    >
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+      </svg>
+    </div>
+    <span class="font-bold text-heading">Share a New Recipe</span>
+    <p class="text-xs text-body mt-1">Inspire the community today.</p>
+  </a>
+</div>
