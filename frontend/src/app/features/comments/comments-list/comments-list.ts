@@ -6,7 +6,6 @@ import { CommentForm } from '../comment-form/comment-form';
 
 @Component({
   selector: 'app-comments-list',
-  standalone: true,
   imports: [NgIf, NgFor, CommentCard, CommentForm],
   templateUrl: './comments-list.html',
 })
