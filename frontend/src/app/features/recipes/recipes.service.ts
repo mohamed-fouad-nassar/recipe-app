@@ -17,7 +17,6 @@ export class RecipeService {
     if (options.page) params = params.set('page', options.page);
     if (options.limit) params = params.set('limit', options.limit);
     if (options.category) params = params.set('category', options.category);
-
     return this.http.get<any>(`${this.baseUrl}/recipes`, { params });
   }
 
@@ -28,6 +27,7 @@ export class RecipeService {
   likeRecipe(id: string) {
     return this.http.post(`${this.baseUrl}/likes/${id}`, {});
   }
+
   unlikeRecipe(id: string) {
     return this.http.delete(`${this.baseUrl}/likes/${id}`);
   }
@@ -35,6 +35,7 @@ export class RecipeService {
   favoriteRecipe(id: string) {
     return this.http.post(`${this.baseUrl}/favorites/${id}`, {});
   }
+
   unfavoriteRecipe(id: string) {
     return this.http.delete(`${this.baseUrl}/favorites/${id}`);
   }
@@ -42,9 +43,11 @@ export class RecipeService {
   getMyRecipes(): Observable<any> {
     return this.http.get(`${this.baseUrl}/recipes/me`);
   }
+
   getFavorites(): Observable<any> {
     return this.http.get(`${this.baseUrl}/favorites`);
   }
+
   getLiked(): Observable<any> {
     return this.http.get(`${this.baseUrl}/likes`);
   }
