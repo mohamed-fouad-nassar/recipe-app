@@ -1,15 +1,16 @@
 import {
-  createRecipeValidation,
-  getRecipesValidation,
-  updateRecipeValidation,
-} from "./recipe.validations";
-import {
   createRecipe,
   removeRecipe,
   updateRecipe,
   getAllRecipes,
   getRecipeById,
+  getMyRecipes,
 } from "./recipe.controller";
+import {
+  getRecipesValidation,
+  updateRecipeValidation,
+  createRecipeValidation,
+} from "./recipe.validations";
 import { Router } from "express";
 import { protect } from "../../common/middlewares/protect";
 import { validate } from "../../common/middlewares/validate";
@@ -23,6 +24,8 @@ router
   .route("/")
   .get(getRecipesValidation, validate, getAllRecipes)
   .post(createRecipeValidation, validate, createRecipe);
+
+router.get("/me", getMyRecipes);
 
 router
   .route("/:id")

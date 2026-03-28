@@ -22,7 +22,6 @@ const recipeSchema = new Schema<IRecipe>(
       ref: "User",
       required: [true, "UserId is required"],
     },
-    likes: { type: Number, default: 0 },
   },
   { timestamps: true },
 );
