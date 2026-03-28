@@ -1,6 +1,6 @@
 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
   @for (recipe of store.myRecipes(); track recipe._id) {
-    <app-profile-recipe-card [data]="recipe" />
+    <app-profile-recipe-card [data]="recipe" (onDelete)="handleDelete(recipe._id)" />
   }
 
   <a
