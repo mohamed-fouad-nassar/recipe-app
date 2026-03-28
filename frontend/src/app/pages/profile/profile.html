@@ -16,10 +16,10 @@
       <div class="relative flex flex-col md:flex-row md:items-end gap-6 -mt-12">
         <div class="relative group">
           <img
-            src="https://ui-avatars.com/api/?name=Chef+Mario&background=f26419&color=fff&size=128"
+            [src]="`https://ui-avatars.com/api/?name=${auth.user().name?.replace(' ', '+')}&background=f26419&color=fff&size=128`"
             class="w-32 h-32 rounded-full border-4 border-white shadow-lg bg-white object-cover"
           />
-          <button
+          <!-- <button
             class="absolute bottom-0 right-0 p-2 bg-heading text-white rounded-full hover:bg-brand transition-colors shadow-md"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -36,31 +36,35 @@
                 d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
               />
             </svg>
-          </button>
+          </button> -->
         </div>
 
         <div class="flex-1">
-          <h1 class="text-3xl font-serif font-bold text-heading">Chef Mario Batali</h1>
-          <p class="text-body text-sm mb-2">@mario_cooks • Joined March 2026</p>
+          <h1 class="text-3xl font-serif font-bold text-heading">{{ auth.user().name }}</h1>
+          <p class="text-body text-sm mb-2">
+            {{ auth.user().email }} • Joined {{ auth.user().createdAt | date }}
+          </p>
           <div class="flex gap-4">
             <span class="text-sm font-bold text-heading"
-              >12 <span class="text-body font-normal">Recipes</span></span
+              >{{ auth.user().recipesCount }}
+              <span class="text-body font-normal">Recipes</span></span
             >
             <span class="text-sm font-bold text-heading"
-              >1.4k <span class="text-body font-normal">Followers</span></span
+              >{{ auth.user().favoritesCount }}
+              <span class="text-body font-normal">Favorites</span></span
             >
             <span class="text-sm font-bold text-heading"
-              >89 <span class="text-body font-normal">Following</span></span
+              >{{ auth.user().likesCount }} <span class="text-body font-normal">Likes</span></span
             >
           </div>
         </div>
 
         <div class="flex gap-3">
-          <button
+          <!-- <button
             class="bg-neutral-primary-soft border border-default text-heading px-6 py-2 rounded-base font-bold hover:bg-neutral-secondary-soft transition-all text-sm"
           >
             Edit Profile
-          </button>
+          </button> -->
           <a
             routerLink="/recipes/add"
             class="bg-brand text-white px-6 py-2 rounded-base font-bold hover:bg-brand-strong transition-all text-sm shadow-md"
@@ -73,44 +77,30 @@
   </section>
 
   <div class="flex border-b border-default mb-8">
-    <button class="px-6 py-3 text-sm font-bold border-b-2 border-brand text-brand">
+    <a
+      routerLink="my-recipes"
+      routerLinkActive="border-b-2 border-brand border-brand text-brand !font-bold"
+      class="px-6 py-3 text-sm font-medium"
+    >
       My Recipes
-    </button>
-    <button
-      class="px-6 py-3 text-sm font-medium text-body hover:text-heading border-b-2 border-transparent transition-all"
-    >
-      Favorites
-    </button>
-    <button
-      class="px-6 py-3 text-sm font-medium text-body hover:text-heading border-b-2 border-transparent transition-all"
-    >
-      Liked
-    </button>
-  </div>
-
-  <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-    @for (recipe of userRecipes(); track recipe.id) {
-      <app-profile-recipe-card [data]="recipe" (onDelete)="handleDelete($event)" />
-    }
+    </a>
 
     <a
-      routerLink="/recipes/add"
-      class="border-2 border-dashed border-default rounded-base flex flex-col items-center justify-center p-8 group hover:border-brand transition-colors min-h-75"
+      routerLink="favorites"
+      routerLinkActive="border-b-2 border-brand border-brand text-brand !font-bold"
+      class="px-6 py-3 text-sm font-medium"
     >
-      <div
-        class="w-12 h-12 bg-stone-100 text-body rounded-full flex items-center justify-center mb-4 group-hover:bg-brand-softer group-hover:text-brand transition-all"
-      >
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M12 4v16m8-8H4"
-          />
-        </svg>
-      </div>
-      <span class="font-bold text-heading">Share a New Recipe</span>
-      <p class="text-xs text-body mt-1">Inspire the community today.</p>
+      Favorites
+    </a>
+
+    <a
+      routerLink="liked"
+      routerLinkActive="border-b-2 border-brand border-brand text-brand !font-bold"
+      class="px-6 py-3 text-sm font-medium"
+    >
+      Liked
     </a>
   </div>
+
+  <router-outlet />
 </main>

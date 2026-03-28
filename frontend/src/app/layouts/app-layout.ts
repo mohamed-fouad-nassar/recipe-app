@@ -25,7 +25,7 @@ export interface ILink {
 })
 export class AppLayout {
   protected links: ILink[] = [
-    { title: 'Home', href: '/' },
+    { title: 'Home', href: '/home' },
     { title: 'About', href: '/about' },
     { title: 'Recipes', href: '/recipes' },
     { title: 'Contact', href: '/contact' },

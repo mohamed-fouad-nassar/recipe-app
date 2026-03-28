@@ -1,0 +1,11 @@
+<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+  @for (recipe of store.favoriteRecipes(); track recipe._id) {
+    <app-recipe-card
+      [data]="recipe"
+      [showLike]="false"
+      (toggleFavorite)="facade.toggleFavorite(recipe)"
+    />
+  } @empty {
+    <p class="text-center text-body col-span-full">You haven't any favorite recipes yet.</p>
+  }
+</div>

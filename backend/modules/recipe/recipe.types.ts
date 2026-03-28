@@ -13,7 +13,6 @@ export interface IRecipe extends Document {
   steps: string[];
   category: string;
   createdBy: mongoose.Types.ObjectId;
-  likes: number;
 }
 
 export interface IRecipeWithFavorite extends IRecipe {

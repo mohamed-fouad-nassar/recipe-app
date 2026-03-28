@@ -88,5 +88,5 @@ export const getUserFullData = async (id: string) => {
   const user = await User.aggregate(pipeline);
   if (!user) throw new HttpError(404, httpStatus.FAIL, "User not found");
 
-  return user;
+  return user[0];
 };
