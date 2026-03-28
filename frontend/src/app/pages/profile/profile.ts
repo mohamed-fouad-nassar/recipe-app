@@ -1,25 +1,32 @@
-import { RouterLink } from '@angular/router';
-import { Component, signal } from '@angular/core';
-import { ProfileRecipeCard } from '../../features/recipes/profile-recipe-card/profile-recipe-card';
+import { Component, inject } from '@angular/core';
+import { RecipeFacade } from '../../features/recipes/recipe.facade';
+import { RouterLink, RouterOutlet, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.html',
-  imports: [RouterLink, ProfileRecipeCard],
+  imports: [RouterLink, RouterOutlet, RouterLinkActive],
 })
 export class Profile {
-  userRecipes = signal<any[]>([
-    {
-      id: 1,
-      title: 'Roasted Herb Chicken',
-      image: '/imgs/recipe-1.avif',
-      likes: 450,
-      comments: 24,
-    },
-    { id: 2, title: 'Spicy Rigatoni', image: '/imgs/recipe-1.avif', likes: 120, comments: 10 },
-  ]);
+  private facade = inject(RecipeFacade);
 
-  handleDelete(id: string | number) {
-    console.log('Deleting recipe with ID:', id);
+  myRecipes = this.facade.myRecipes;
+  favorites = this.facade.favoriteRecipes;
+  liked = this.facade.likedRecipes;
+
+  logData() {
+    console.log('MY ==> ', this.myRecipes());
+    console.log('FAVORITES ==> ', this.favorites());
+    console.log('LIKES ==> ', this.liked());
+  }
+
+  ngOnInit() {
+    this.facade.loadMyRecipes();
+    this.facade.loadFavorites();
+    this.facade.loadLiked();
+  }
+
+  handleDelete(id: string) {
+    this.facade.deleteRecipe(id);
   }
 }

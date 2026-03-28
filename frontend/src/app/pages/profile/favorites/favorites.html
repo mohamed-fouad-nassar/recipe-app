@@ -1,0 +1,9 @@
+<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+  @for (recipe of store.favoriteRecipes(); track recipe._id) {
+    <app-recipe-card
+      [data]="recipe"
+      [showLike]="false"
+      (toggleFavorite)="facade.toggleFavorite(recipe)"
+    />
+  }
+</div>

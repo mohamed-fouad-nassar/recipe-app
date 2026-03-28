@@ -73,44 +73,30 @@
   </section>
 
   <div class="flex border-b border-default mb-8">
-    <button class="px-6 py-3 text-sm font-bold border-b-2 border-brand text-brand">
+    <a
+      routerLink="my-recipes"
+      routerLinkActive="border-b-2 border-brand border-brand text-brand !font-bold"
+      class="px-6 py-3 text-sm font-medium"
+    >
       My Recipes
-    </button>
-    <button
-      class="px-6 py-3 text-sm font-medium text-body hover:text-heading border-b-2 border-transparent transition-all"
-    >
-      Favorites
-    </button>
-    <button
-      class="px-6 py-3 text-sm font-medium text-body hover:text-heading border-b-2 border-transparent transition-all"
-    >
-      Liked
-    </button>
-  </div>
-
-  <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-    @for (recipe of userRecipes(); track recipe.id) {
-      <app-profile-recipe-card [data]="recipe" (onDelete)="handleDelete($event)" />
-    }
+    </a>
 
     <a
-      routerLink="/recipes/add"
-      class="border-2 border-dashed border-default rounded-base flex flex-col items-center justify-center p-8 group hover:border-brand transition-colors min-h-75"
+      routerLink="favorites"
+      routerLinkActive="border-b-2 border-brand border-brand text-brand !font-bold"
+      class="px-6 py-3 text-sm font-medium"
     >
-      <div
-        class="w-12 h-12 bg-stone-100 text-body rounded-full flex items-center justify-center mb-4 group-hover:bg-brand-softer group-hover:text-brand transition-all"
-      >
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M12 4v16m8-8H4"
-          />
-        </svg>
-      </div>
-      <span class="font-bold text-heading">Share a New Recipe</span>
-      <p class="text-xs text-body mt-1">Inspire the community today.</p>
+      Favorites
+    </a>
+
+    <a
+      routerLink="liked"
+      routerLinkActive="border-b-2 border-brand border-brand text-brand !font-bold"
+      class="px-6 py-3 text-sm font-medium"
+    >
+      Liked
     </a>
   </div>
+
+  <router-outlet />
 </main>
