@@ -50,14 +50,15 @@
         id="user-dropdown"
       >
         <div class="px-4 py-3 text-sm border-b border-default">
-          <span class="block text-heading font-medium">Joseph McFall</span>
-          <span class="block text-body truncate">name@flowbite.com</span>
+          <span class="block text-heading font-medium">{{ this.auth.user().name }}</span>
+          <span class="block text-body truncate">{{ this.auth.user().email }}</span>
         </div>
         <nav>
           <ul class="p-2 text-sm text-body font-medium" aria-labelledby="user-menu-button">
             <li>
               <a
                 routerLink="/profile"
+                (click)="closeDropdown()"
                 class="inline-flex items-center w-full p-2 px-4 gap-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"
               >
                 <svg
@@ -109,9 +110,10 @@
 
       <!-- mobile menu button -->
       <button
-        data-collapse-toggle="navbar-user"
+        (click)="$event.stopPropagation(); openMobileMenu()"
         type="button"
         class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-body rounded-base md:hidden hover:bg-neutral-secondary-soft hover:text-heading focus:outline-none focus:ring-2 focus:ring-neutral-tertiary"
+        data-collapse-toggle="navbar-user"
         aria-controls="navbar-user"
         aria-expanded="false"
       >
@@ -147,16 +149,15 @@
           <li>
             <a
               [routerLink]="link.href"
+              (click)="onNavLinkClick()"
+              routerLinkActive="bg-brand text-white md:bg-transparent md:text-fg-brand"
+              [routerLinkActiveOptions]="{ exact: true }"
               class="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent"
             >
               {{ link.title }}
             </a>
           </li>
         }
-        <!--
-            active ==> class="block py-2 px-3 text-white bg-brand rounded md:bg-transparent md:text-fg-brand md:p-0"
-            inactive ==> class="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent"
-        -->
       </ul>
     </nav>
   </div>

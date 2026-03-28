@@ -9,6 +9,7 @@ import { Home } from './pages/home/home';
 import { Login } from './pages/login/login';
 import { About } from './pages/about/about';
 import { Recipe } from './pages/recipe/recipe';
+import { Search } from './pages/search/search';
 import { Contact } from './pages/contact/contact';
 import { Recipes } from './pages/recipes/recipes';
 import { Profile } from './pages/profile/profile';
@@ -18,7 +19,6 @@ import { EditRecipe } from './pages/edit-recipe/edit-recipe';
 
 // guards
 import { authGuard, guestGuard } from './features/auth/auth.guard';
-import { Search } from './pages/search/search';
 
 export const routes: Routes = [
   {

@@ -13,14 +13,12 @@ export class AuthService {
 
   initUserFromStorage() {
     const token = this.token();
-    if (!token) return;
+    const user = localStorage.getItem('user');
+
+    if (!token || !user) return;
 
     try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      this.user.set({
-        _id: payload.id,
-        email: payload.email,
-      });
+      this.user.set(JSON.parse(user)); // ✅ full user restore
     } catch {
       this.clearSession();
     }
@@ -32,6 +30,7 @@ export class AuthService {
         this.token.set(res.data.token);
         localStorage.setItem('token', res.data.token);
         this.user.set(res.data.user);
+        localStorage.setItem('user', JSON.stringify(res.data.user));
       }),
     );
   }
@@ -55,6 +54,7 @@ export class AuthService {
     this.token.set(null);
     this.user.set(null);
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
   }
 
   isLoggedIn() {
