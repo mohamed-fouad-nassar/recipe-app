@@ -1,8 +1,8 @@
-import { Collapse, Dropdown, Modal } from 'flowbite';
+import { Modal } from 'flowbite';
 import { FormsModule } from '@angular/forms';
 import { ILink } from '../../layouts/app-layout';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../features/auth/auth.service';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { Component, ElementRef, HostListener, inject, Input, ViewChild } from '@angular/core';
 
 @Component({
@@ -75,8 +75,6 @@ export class Header {
     const navbar = document.getElementById('navbar-user');
     const button = document.querySelector('[data-collapse-toggle="navbar-user"]');
     const target = event.target as HTMLElement;
-
-    // Close menu if it's open and click is outside navbar and button
     if (navbar && !navbar.classList.contains('hidden')) {
       if (!navbar.contains(target) && !button?.contains(target)) {
         this.closeMobileMenu();
