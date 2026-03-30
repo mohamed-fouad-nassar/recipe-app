@@ -13,6 +13,7 @@ import recipesRoute from "./modules/recipe/recipe.routes";
 import profileRoute from "./modules/profile/profile.routes";
 import commentsRoute from "./modules/comment/comment.routes";
 import favoritesRoute from "./modules/favorite/favorite.routes";
+import categoriesRoute from "./modules/category/category.route";
 
 const app = express();
 
@@ -40,6 +41,7 @@ app.use("/api/recipes", recipesRoute);
 app.use("/api/profile", profileRoute);
 app.use("/api/comments", commentsRoute);
 app.use("/api/favorites", favoritesRoute);
+app.use("/api/categories", categoriesRoute);
 
 // Error handlers
 app.use(notFound);
