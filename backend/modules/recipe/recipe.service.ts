@@ -10,7 +10,13 @@ export const getAllRecipes = async (query: any, userId: string) => {
   const match: any = {};
 
   if (search) match.title = { $regex: search, $options: "i" };
-  if (category) match.category = { $regex: category, $options: "i" };
+
+  if (category) {
+    if (!mongoose.Types.ObjectId.isValid(category)) {
+      throw new HttpError(400, httpStatus.FAIL, "Invalid category id");
+    }
+    match.category = new mongoose.Types.ObjectId(category);
+  }
 
   const userObjectId = new mongoose.Types.ObjectId(userId);
 
@@ -107,6 +113,26 @@ export const getAllRecipes = async (query: any, userId: string) => {
           },
           {
             $lookup: {
+              from: "categories",
+              localField: "category",
+              foreignField: "_id",
+              as: "category",
+            },
+          },
+          {
+            $unwind: {
+              path: "$category",
+              preserveNullAndEmptyArrays: true,
+            },
+          },
+          {
+            $project: {
+              "category.name": 1,
+              "category._id": 1,
+            },
+          },
+          {
+            $lookup: {
               from: "users",
               localField: "createdBy",
               foreignField: "_id",
@@ -155,7 +181,9 @@ export const createRecipe = async (
 };
 
 export const getRecipeById = async (id: string): Promise<IRecipe> => {
-  const recipe = await Recipe.findById(id).populate("createdBy", "name email");
+  const recipe = await Recipe.findById(id)
+    .populate("createdBy", "name email")
+    .populate("category", "name");
   if (!recipe) throw new HttpError(404, httpStatus.FAIL, "Recipe not found");
   return recipe;
 };
@@ -288,6 +316,20 @@ export const getRecipesByUser = async (
         likesCountData: 0,
         isFavoriteData: 0,
         isLikedData: 0,
+      },
+    },
+    {
+      $lookup: {
+        from: "categories",
+        localField: "category",
+        foreignField: "_id",
+        as: "category",
+      },
+    },
+    {
+      $unwind: {
+        path: "$category",
+        preserveNullAndEmptyArrays: true,
       },
     },
     {

@@ -2,9 +2,9 @@ import {
   createRecipe,
   removeRecipe,
   updateRecipe,
+  getMyRecipes,
   getAllRecipes,
   getRecipeById,
-  getMyRecipes,
 } from "./recipe.controller";
 import {
   getRecipesValidation,

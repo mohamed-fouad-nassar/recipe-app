@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { body, query } from "express-validator";
 
 export const createRecipeValidation = [
@@ -16,8 +17,8 @@ export const createRecipeValidation = [
   body("category")
     .notEmpty()
     .withMessage("Category is required")
-    .trim()
-    .escape(),
+    .custom((value) => mongoose.Types.ObjectId.isValid(value))
+    .withMessage("Invalid category id"),
   body("ingredients")
     .isArray({ min: 1 })
     .withMessage("Ingredients must be a non-empty array"),
@@ -43,8 +44,10 @@ export const createRecipeValidation = [
 
 export const updateRecipeValidation = [
   body("title").optional().isLength({ min: 3 }),
-  body("description").optional(),
-  body("category").optional(),
+  body("category")
+    .optional()
+    .custom((value) => mongoose.Types.ObjectId.isValid(value))
+    .withMessage("Invalid category id"),
   body("ingredients").optional().isArray(),
   body("steps").optional().isArray(),
 ];
@@ -53,5 +56,8 @@ export const getRecipesValidation = [
   query("page").optional().isInt({ min: 1 }),
   query("limit").optional().isInt({ min: 1 }),
   query("search").optional().isString(),
-  query("category").optional().isString(),
+  query("category")
+    .optional()
+    .custom((value) => mongoose.Types.ObjectId.isValid(value))
+    .withMessage("Invalid category id"),
 ];

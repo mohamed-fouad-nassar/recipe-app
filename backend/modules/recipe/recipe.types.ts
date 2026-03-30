@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { ObjectId } from "mongoose";
 
 export interface IIngredient {
   name: string;
@@ -11,7 +11,7 @@ export interface IRecipe extends Document {
   image?: string;
   ingredients: IIngredient[];
   steps: string[];
-  category: string;
+  category: ObjectId;
   createdBy: mongoose.Types.ObjectId;
 }
 
