@@ -16,7 +16,11 @@ const recipeSchema = new Schema<IRecipe>(
     image: String,
     ingredients: [ingredientSchema],
     steps: [{ type: String, required: [true, "Steps are required"] }],
-    category: { type: String, required: [true, "Category is required"] },
+    category: {
+      type: Schema.Types.ObjectId,
+      ref: "Category",
+      required: [true, "Category is required"],
+    },
     createdBy: {
       type: Schema.Types.ObjectId,
       ref: "User",
@@ -25,5 +29,7 @@ const recipeSchema = new Schema<IRecipe>(
   },
   { timestamps: true },
 );
+
+recipeSchema.index({ category: 1 });
 
 export const Recipe = model<IRecipe>("Recipe", recipeSchema);

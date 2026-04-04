@@ -1,5 +1,5 @@
-<main class="max-w-7xl mx-auto px-4 py-16">
-  <header class="mb-12 border-b border-default pb-8">
+<div class="max-w-7xl mx-auto px-4 py-16">
+  <section class="mb-12 border-b border-default pb-8">
     <h1 class="text-4xl font-serif font-bold text-heading mb-2">
       @if (searchQuery()) {
         Search results for <span class="text-brand">"{{ searchQuery() }}"</span>
@@ -10,7 +10,7 @@
     <p class="text-body">
       Found <span class="font-bold text-heading">{{ results().length }}</span> delicious matches
     </p>
-  </header>
+  </section>
 
   @if (isLoading()) {
     <div class="grid md:grid-cols-3 gap-8">
@@ -23,6 +23,15 @@
       @for (recipe of results(); track recipe._id) {
         <app-recipe-card [data]="recipe" />
       }
+    </div>
+
+    <div class="mt-8 flex justify-center">
+      <app-pagination
+        [totalItems]="total()"
+        [pageSize]="limit()"
+        [currentPage]="page()"
+        (pageChange)="onPageClick($event)"
+      />
     </div>
   } @else {
     <section class="flex flex-col items-center justify-center py-24 text-center">
@@ -51,4 +60,4 @@
       </a>
     </section>
   }
-</main>
+</div>
