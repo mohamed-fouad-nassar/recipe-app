@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { RecipeService } from '../../features/recipes/recipes.service';
 import { RecipeFormComponent } from '../../features/recipes/recipe-form/recipe-form';
 
 @Component({
@@ -7,9 +9,24 @@ import { RecipeFormComponent } from '../../features/recipes/recipe-form/recipe-f
   imports: [RecipeFormComponent],
 })
 export class AddRecipe {
-  handleCreate(formData: any) {
-    console.log('Creating Recipe:', formData);
+  router = inject(Router);
+  recipeService = inject(RecipeService);
+  isSubmitting = false;
+
+  handleCreate(data: any) {
+    this.isSubmitting = true;
+    this.recipeService.createRecipe(data).subscribe({
+      next: (res) => {
+        this.isSubmitting = false;
+        this.router.navigate(['/profile/my-recipes']);
+      },
+      error: () => {
+        this.isSubmitting = false;
+      },
+    });
   }
 
-  goBack() {}
+  goBack() {
+    this.router.navigate(['/profile/my-recipes']);
+  }
 }
