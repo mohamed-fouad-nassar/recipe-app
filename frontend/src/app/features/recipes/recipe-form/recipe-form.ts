@@ -1,36 +1,115 @@
-import { Recipe } from '../recipes.model';
+import {
+  Input,
+  inject,
+  OnInit,
+  Output,
+  OnChanges,
+  Component,
+  EventEmitter,
+  SimpleChanges,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component, input, output, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CategoryFacade } from '../../categories/category.facade';
+import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-recipe-form',
-  standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './recipe-form.html',
 })
-export class RecipeFormComponent implements OnInit {
-  private fb = inject(FormBuilder);
+export class RecipeFormComponent implements OnInit, OnChanges {
+  fb = inject(FormBuilder);
+  categoryFacade = inject(CategoryFacade);
 
-  initialData = input<Recipe | null>(null);
-  submitForm = output<any>();
-  cancel = output<void>();
+  @Input() initialData: any = null;
+  @Output() submitForm = new EventEmitter<any>();
+  @Output() cancel = new EventEmitter<void>();
 
-  recipeForm!: FormGroup;
+  recipeForm = this.fb.group({
+    title: ['', Validators.required],
+    description: [''],
+    category: ['', Validators.required],
+    image: [''],
+    ingredients: this.fb.array([]),
+    steps: this.fb.array([]),
+  });
+
+  categories = this.categoryFacade.categories;
+  loadingCategories = this.categoryFacade.loading;
 
   ngOnInit() {
-    this.recipeForm = this.fb.group({
-      title: [this.initialData()?.title || '', [Validators.required, Validators.minLength(3)]],
-      // category: [this.initialData()?.category || 'General', Validators.required],
-      // time: [this.initialData()?.time || '', Validators.required],
-      image: [this.initialData()?.image || '', Validators.required],
-      description: [''],
+    this.categoryFacade.loadCategories();
+    if (!this.initialData) this.initEmptyForm();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['initialData'] && this.initialData) this.setFormData(this.initialData.data.recipe);
+  }
+
+  private setFormData(data: any) {
+    this.recipeForm.patchValue({
+      title: data.title,
+      description: data.description,
+      image: data.image,
+      category: data.category?._id || data.category,
     });
+
+    this.ingredients.clear();
+    this.steps.clear();
+
+    if (data.ingredients?.length) {
+      data.ingredients.forEach((ing: any) => this.addIngredient(ing));
+    } else {
+      this.addIngredient();
+    }
+
+    if (data.steps?.length) {
+      data.steps.forEach((step: any) => this.addStep(step));
+    } else {
+      this.addStep();
+    }
+  }
+
+  private initEmptyForm() {
+    this.addIngredient();
+    this.addStep();
+  }
+
+  get ingredients(): FormArray {
+    return this.recipeForm.get('ingredients') as FormArray;
+  }
+
+  get steps(): FormArray {
+    return this.recipeForm.get('steps') as FormArray;
+  }
+
+  addIngredient(ing: any = { name: '', quantity: '' }) {
+    this.ingredients.push(
+      this.fb.group({
+        name: [ing.name || '', Validators.required],
+        quantity: [ing.quantity || '', Validators.required],
+      }),
+    );
+  }
+
+  removeIngredient(index: number) {
+    this.ingredients.removeAt(index);
+  }
+
+  addStep(step: string = '') {
+    this.steps.push(this.fb.control(step || '', Validators.required));
+  }
+
+  removeStep(index: number) {
+    this.steps.removeAt(index);
   }
 
   onSubmit() {
-    if (this.recipeForm.valid) {
-      this.submitForm.emit(this.recipeForm.value);
+    if (this.recipeForm.invalid) {
+      this.recipeForm.markAllAsTouched();
+      return;
     }
+
+    this.submitForm.emit(this.recipeForm.value);
   }
 }

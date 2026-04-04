@@ -53,6 +53,16 @@ export class RecipeService {
     return this.http.get(`${this.baseUrl}/likes`);
   }
 
+  createRecipe(data: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/recipes`, data);
+  }
+
+  updateRecipe(id: string, data: any) {
+    console.log(id);
+    console.log(data);
+    return this.http.patch<any>(`${this.baseUrl}/recipes/${id}`, data);
+  }
+
   deleteRecipe(id: string) {
     return this.http.delete(`${this.baseUrl}/recipes/${id}`);
   }
