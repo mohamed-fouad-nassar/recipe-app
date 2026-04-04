@@ -1,5 +1,6 @@
-import { Component, signal } from '@angular/core';
-import { Recipe } from '../../features/recipes/recipes.model';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Component, inject, signal } from '@angular/core';
+import { RecipeService } from '../../features/recipes/recipes.service';
 import { RecipeFormComponent } from '../../features/recipes/recipe-form/recipe-form';
 
 @Component({
@@ -8,13 +9,40 @@ import { RecipeFormComponent } from '../../features/recipes/recipe-form/recipe-f
   imports: [RecipeFormComponent],
 })
 export class EditRecipe {
-  currentRecipe = signal<Recipe | null>(null);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private recipeService = inject(RecipeService);
 
-  handleUpdate(formData: any) {
-    const id = this.currentRecipe()?._id;
+  recipe = signal<any>(null);
+  isLoading = signal(true);
+
+  ngOnInit() {
+    const id = this.route.snapshot.paramMap.get('id');
+
     if (!id) return;
-    console.log('Updating Recipe:', id, formData);
+
+    this.recipeService.fetchRecipeById(id).subscribe({
+      next: (res) => {
+        this.recipe.set(res);
+        this.isLoading.set(false);
+      },
+      error: () => {
+        this.isLoading.set(false);
+      },
+    });
   }
 
-  goBack() {}
+  handleUpdate(data: any) {
+    const id = this.route.snapshot.paramMap.get('id');
+
+    this.recipeService.updateRecipe(id!, data).subscribe({
+      next: () => {
+        this.router.navigate(['/profile/my-recipes']);
+      },
+    });
+  }
+
+  goBack() {
+    this.router.navigate(['/profile/my-recipes']);
+  }
 }

@@ -1,4 +1,4 @@
-<main class="max-w-5xl mx-auto py-16">
+<!-- <main class="max-w-5xl mx-auto py-16">
   <section class="mb-12">
     <h1 class="text-4xl font-serif font-bold text-heading mb-2">Edit Recipe</h1>
     <p class="text-body">Refining the perfection of "{{ currentRecipe()?.title }}".</p>
@@ -18,4 +18,25 @@
       </div>
     }
   </section>
-</main>
+</main> -->
+
+<div class="max-w-5xl mx-auto py-16">
+  <section class="mb-12">
+    <h1 class="text-4xl font-serif font-bold text-heading mb-2">Edit Recipe</h1>
+    <p class="text-body">Update your recipe details.</p>
+  </section>
+
+  <section
+    class="bg-neutral-primary border border-default rounded-base shadow-xs p-8 md:p-12 relative overflow-hidden"
+  >
+    @if (isLoading()) {
+      <div class="text-center py-20">
+        <p class="animate-pulse text-brand font-bold italic">Loading recipe data...</p>
+      </div>
+    } @else {
+      @if (recipe()) {
+        <app-recipe-form [initialData]="recipe()" (submitForm)="handleUpdate($event)" />
+      }
+    }
+  </section>
+</div>
