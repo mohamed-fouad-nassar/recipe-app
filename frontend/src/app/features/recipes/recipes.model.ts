@@ -14,7 +14,10 @@ export interface Recipe {
   _id: string;
   title: string;
   description: string;
-  category: string;
+  category: {
+    _id: string;
+    name: string;
+  };
   image: string;
   likesCount: number;
   createdAt: string;
@@ -37,7 +40,10 @@ export interface RecipeDetails {
   _id: string;
   title: string;
   description: string;
-  category: string;
+  category: {
+    _id: string;
+    name: string;
+  };
   image: string;
   likesCount: number;
   createdAt: string;

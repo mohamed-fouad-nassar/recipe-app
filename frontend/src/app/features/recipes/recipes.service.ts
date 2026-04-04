@@ -12,10 +12,11 @@ export class RecipeService {
     return this.http.get<HomeRecipesResponse>(`${this.baseUrl}/recipes?page=1&limit=3`);
   }
 
-  fetchAllRecipes(options: { page?: number; limit?: number; category?: string }) {
+  fetchAllRecipes(options: { search?: string; page?: number; limit?: number; category?: string }) {
     let params = new HttpParams();
-    if (options.page) params = params.set('page', options.page);
-    if (options.limit) params = params.set('limit', options.limit);
+    if (options.search) params = params.set('search', options.search.trim());
+    if (options.page) params = params.set('page', options.page.toString());
+    if (options.limit) params = params.set('limit', options.limit.toString());
     if (options.category) params = params.set('category', options.category);
     return this.http.get<any>(`${this.baseUrl}/recipes`, { params });
   }

@@ -2,6 +2,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Component, inject, OnInit } from '@angular/core';
 import { Spinner } from '../../components/spinner/spinner';
 import { RecipeFacade } from '../../features/recipes/recipe.facade';
+import { CategoryFacade } from '../../features/categories/category.facade';
 import { RecipeCard } from '../../features/recipes/recipe-card/recipe-card';
 import { PaginationComponent } from '../../components/pagination/pagination';
 import { ErrorMessageComponent } from '../../components/error-message/error-message';
@@ -16,6 +17,11 @@ export class Recipes implements OnInit {
   route = inject(ActivatedRoute);
   router = inject(Router);
 
+  categoryFacade = inject(CategoryFacade);
+
+  categories = this.categoryFacade.categories;
+  categoriesLoading = this.categoryFacade.loading;
+
   recipes = this.facade.recipes;
   loading = this.facade.store.loading;
   error = this.facade.store.error;
@@ -23,6 +29,8 @@ export class Recipes implements OnInit {
   filters = this.facade.store.filters;
 
   ngOnInit() {
+    this.categoryFacade.loadCategories();
+
     this.route.queryParams.subscribe((params) => {
       this.facade.store.filters.set({
         page: +params['page'] || 1,
