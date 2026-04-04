@@ -12,11 +12,12 @@
           <a routerLink="/recipes" class="hover:text-brand">Recipes</a>
           <span>/</span>
           <a
-            [routerLink]="'/recipes'"
-            [queryParams]="{ category: recipe()?.category }"
             class="hover:text-brand"
-            >{{ recipe()?.category }}</a
+            [routerLink]="'/recipes'"
+            [queryParams]="{ category: recipe()?.category?._id }"
           >
+            {{ recipe()?.category?.name }}
+          </a>
         </nav>
         <h1 class="text-4xl md:text-6xl font-serif font-bold text-heading mb-6">
           {{ recipe()?.title }}

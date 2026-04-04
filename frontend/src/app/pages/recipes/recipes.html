@@ -1,21 +1,23 @@
-<div class="max-w-7xl mx-auto py-8">
+<div class="max-w-7xl mx-auto py-8 px-4">
   <div
-    class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-neutral-primary-soft p-6 border border-default rounded-base shadow-xs"
+    class="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-neutral-primary-soft p-6 border border-default rounded-base shadow-xs"
   >
     <div>
       <h1 class="text-3xl font-serif font-bold text-heading">All Recipes</h1>
       <p class="text-body text-sm">Discover our kitchen-tested favorites.</p>
     </div>
-    <div class="flex gap-2">
+    <div class="flex justify-center md:justify-end w-full md:w-auto">
       <select
-        #categorySelect
         [value]="filters().category"
-        (change)="onCategoryChange(categorySelect.value)"
-        class="bg-stone-50 border border-default text-heading text-sm rounded-base p-2.5"
+        (change)="onCategoryChange($any($event.target).value)"
+        class="bg-stone-50 border border-default text-heading text-sm rounded-base px-4 py-2.5 min-w-50 focus:outline-none focus:ring-2 focus:ring-brand transition"
       >
-        <option value="" [selected]="filters().category === ''">All Categories</option>
-        @for (type of ['Dinner', 'Salad', 'Breakfast']; track type) {
-          <option [value]="type" [selected]="filters().category === type">{{ type }}</option>
+        <option value="">All Categories</option>
+
+        @for (cat of categories(); track cat._id) {
+          <option [value]="cat._id" [selected]="filters().category === cat._id">
+            {{ cat.name }}
+          </option>
         }
       </select>
     </div>
