@@ -12,9 +12,10 @@ export const validate = (req: Request, res: Response, next: NextFunction) => {
       field: err.type === "field" ? err.path : undefined,
       message: err.msg,
     }));
-    console.log(formattedErrors);
+    console.log("VALIDATION ERRORS", formattedErrors);
     return res.status(400).json({
       status: httpStatus.FAIL,
+      message: "Validation Failed",
       errors: formattedErrors,
     });
   }

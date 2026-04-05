@@ -9,6 +9,7 @@ import { errorHandler } from "./common/middlewares/error-handle";
 
 import authRoute from "./modules/auth/auth.routes";
 import likesRoute from "./modules/like/like.routes";
+import uploadRoute from "./modules/upload/upload.route";
 import recipesRoute from "./modules/recipe/recipe.routes";
 import profileRoute from "./modules/profile/profile.routes";
 import commentsRoute from "./modules/comment/comment.routes";
@@ -28,6 +29,7 @@ app.use(
 app.use(helmet());
 app.use(morgan("dev"));
 app.use(cookieParser());
+app.use("/uploads", express.static("uploads"));
 
 // API Health check
 app.get("/api/health", (_, res) => {
@@ -37,6 +39,7 @@ app.get("/api/health", (_, res) => {
 // App Routes
 app.use("/api/auth", authRoute);
 app.use("/api/likes", likesRoute);
+app.use("/api/upload", uploadRoute);
 app.use("/api/recipes", recipesRoute);
 app.use("/api/profile", profileRoute);
 app.use("/api/comments", commentsRoute);
