@@ -383,5 +383,7 @@ export const handleRecipeImage = async (
     }
   }
 
+  console.log("newImagePath: ", newImagePath);
+
   return newImagePath;
 };

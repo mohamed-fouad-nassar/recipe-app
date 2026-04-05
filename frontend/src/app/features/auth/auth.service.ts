@@ -53,6 +53,15 @@ export class AuthService {
       .pipe(tap(() => this.clearSession()));
   }
 
+  refreshToken() {
+    return this.http.post<any>(`${this.baseUrl}/auth/refresh`, {}, { withCredentials: true }).pipe(
+      tap((res) => {
+        this.token.set(res.data.token);
+        localStorage.setItem('token', res.data.token);
+      }),
+    );
+  }
+
   getCurrentUserId(): string {
     return this.user()?._id || '';
   }
@@ -62,6 +71,10 @@ export class AuthService {
     this.user.set(null);
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+  }
+
+  logoutLocal() {
+    this.clearSession();
   }
 
   isLoggedIn() {

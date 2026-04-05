@@ -29,14 +29,21 @@
 
     <div class="space-y-2 col-span-2">
       <label class="block text-sm font-bold text-heading uppercase tracking-tighter">
-        Image URL
+        Recipe Image
       </label>
+
       <input
-        type="text"
-        formControlName="image"
-        placeholder="https://images.unsplash.com/..."
+        type="file"
+        (change)="onFileSelected($event)"
+        accept="image/*"
         class="bg-neutral-primary-soft border border-default text-heading placeholder:text-body/40 text-sm rounded-base focus:ring-brand focus:border-brand block w-full p-3 transition-all"
       />
+
+      @if (imagePreview) {
+        <div class="mt-2">
+          <img [src]="imagePreview" alt="Image Preview" class="h-32 object-cover rounded-md" />
+        </div>
+      }
     </div>
   </div>
 

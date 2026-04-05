@@ -16,6 +16,7 @@ import { protect } from "../../common/middlewares/protect";
 import { validate } from "../../common/middlewares/validate";
 import { uploadSingle } from "../../common/middlewares/upload";
 import { objectIdValidation } from "../../common/validations/object-id";
+import { parseJsonFields } from "./recipe.middlewares";
 
 const router = Router();
 
@@ -24,7 +25,13 @@ router.use(protect);
 router
   .route("/")
   .get(getRecipesValidation, validate, getAllRecipes)
-  .post(uploadSingle("image"), createRecipeValidation, validate, createRecipe);
+  .post(
+    uploadSingle("image"),
+    parseJsonFields,
+    createRecipeValidation,
+    validate,
+    createRecipe,
+  );
 
 router.get("/me", getMyRecipes);
 
@@ -32,7 +39,13 @@ router
   .route("/:id")
   .all(objectIdValidation(), validate)
   .get(getRecipeById)
-  .patch(uploadSingle("image"), updateRecipeValidation, validate, updateRecipe)
+  .patch(
+    uploadSingle("image"),
+    parseJsonFields,
+    updateRecipeValidation,
+    validate,
+    updateRecipe,
+  )
   .delete(removeRecipe);
 
 export default router;

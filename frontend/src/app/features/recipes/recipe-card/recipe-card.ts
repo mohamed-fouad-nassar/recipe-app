@@ -17,6 +17,12 @@ export class RecipeCard {
   @Output() toggleLike = new EventEmitter<void>();
   @Output() toggleFavorite = new EventEmitter<void>();
 
+  getImageUrl(image: string | null | undefined): string {
+    if (!image) return 'assets/placeholder.png';
+    if (image.startsWith('https')) return image;
+    return `http://localhost:5000/${image}`;
+  }
+
   logShowActs() {
     console.log('likes: ', this.showLike, 'favorites:', this.showFavorite);
   }
