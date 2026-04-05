@@ -66,10 +66,6 @@ export const refreshAccessToken = async (
   if (!user)
     throw new HttpError(401, httpStatus.FAIL, "Invalid token provided");
 
-  console.log(user.refreshToken !== hashToken(refreshToken));
-  console.log(user.refreshToken);
-  console.log(hashToken(refreshToken as string));
-
   if (user.refreshToken !== hashToken(refreshToken))
     throw new HttpError(401, httpStatus.FAIL, "Token mismatch");
 

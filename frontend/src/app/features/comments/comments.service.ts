@@ -15,8 +15,6 @@ export class CommentsService {
   }
 
   addComment(recipeId: string, content: string): Observable<{ data: { comment: Comment } }> {
-    console.log(recipeId, content);
-
     return this.http.post<{ data: { comment: Comment } }>(`${this.baseUrl}/${recipeId}`, {
       content,
     });

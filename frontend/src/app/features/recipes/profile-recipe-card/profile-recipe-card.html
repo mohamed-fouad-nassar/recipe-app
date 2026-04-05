@@ -3,15 +3,16 @@
 >
   <div class="relative aspect-video overflow-hidden">
     <img
-      [src]="data.image"
+      [src]="getImageUrl(data.image)"
+      [alt]="data.title"
       class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
     />
 
     <button
+      type="button"
       [id]="'dropdownButton-' + data._id"
       [attr.data-dropdown-toggle]="'dropdownMenu-' + data._id"
       class="absolute top-3 right-3 p-1.5 bg-white/90 backdrop-blur rounded-full text-heading hover:text-brand shadow-sm transition-colors"
-      type="button"
     >
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path

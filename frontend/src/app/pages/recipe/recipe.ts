@@ -39,6 +39,12 @@ export class Recipe implements OnInit {
     this.commentsFacade.loadComments(id);
   }
 
+  getImageUrl(image: string | null | undefined): string {
+    if (!image) return 'assets/placeholder.png';
+    if (image.startsWith('https')) return image;
+    return `http://localhost:5000/${image}`;
+  }
+
   toggleLike() {
     const recipe = this.recipe();
     if (recipe) this.facade.toggleLike(recipe);

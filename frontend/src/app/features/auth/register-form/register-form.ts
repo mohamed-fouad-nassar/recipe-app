@@ -54,8 +54,6 @@ export class RegisterForm {
         this.router.navigate(['/auth/login']);
       },
       error: (err) => {
-        console.log(err);
-
         let msg = err.error.message || 'An unexpected error occurred';
         this.errorMessage.set(msg);
 

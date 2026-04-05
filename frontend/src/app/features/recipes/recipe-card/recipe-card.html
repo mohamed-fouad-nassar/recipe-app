@@ -3,7 +3,7 @@
 >
   <a [routerLink]="['/recipes', data._id]" class="relative block aspect-4/3 overflow-hidden">
     <img
-      [src]="data.image"
+      [src]="getImageUrl(data.image)"
       [alt]="data.title"
       class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
     />
@@ -43,7 +43,6 @@
             stroke-linecap="round"
           />
         </svg>
-        <!-- {{ data.time }} -->
         15 Min
       </span>
     </div>
@@ -60,11 +59,13 @@
       <div class="flex items-center gap-2">
         <img
           [src]="
-            'https://ui-avatars.com/api/?name=' + data.createdBy + '&background=f26419&color=fff'
+            'https://ui-avatars.com/api/?name=' +
+            data.createdBy.name +
+            '&background=f26419&color=fff'
           "
           class="w-6 h-6 rounded-full"
         />
-        <span class="text-xs font-medium text-heading">{{ data.createdBy }}</span>
+        <span class="text-xs font-medium text-heading">{{ data.createdBy.name }}</span>
       </div>
 
       <button
