@@ -21,7 +21,6 @@ export class CommentForm {
   }
 
   submit() {
-    console.log(this.content);
     if (!this.content.trim()) return;
     this.submitForm.emit(this.content);
     this.content = '';

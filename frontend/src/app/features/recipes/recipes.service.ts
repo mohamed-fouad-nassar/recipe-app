@@ -58,8 +58,6 @@ export class RecipeService {
   }
 
   updateRecipe(id: string, data: any) {
-    console.log(id);
-    console.log(data);
     return this.http.patch<any>(`${this.baseUrl}/recipes/${id}`, data);
   }
 

@@ -29,8 +29,6 @@ export class Header {
     this.auth.logout().subscribe({
       next: () => this.router.navigate(['/auth/login']),
       error: (err) => {
-        console.log(err);
-
         this.auth['clearSession']();
         this.router.navigate(['/auth/login']);
       },
