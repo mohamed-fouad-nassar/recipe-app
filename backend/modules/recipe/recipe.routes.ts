@@ -14,6 +14,7 @@ import {
 import { Router } from "express";
 import { protect } from "../../common/middlewares/protect";
 import { validate } from "../../common/middlewares/validate";
+import { uploadSingle } from "../../common/middlewares/upload";
 import { objectIdValidation } from "../../common/validations/object-id";
 
 const router = Router();
@@ -23,7 +24,7 @@ router.use(protect);
 router
   .route("/")
   .get(getRecipesValidation, validate, getAllRecipes)
-  .post(createRecipeValidation, validate, createRecipe);
+  .post(uploadSingle("image"), createRecipeValidation, validate, createRecipe);
 
 router.get("/me", getMyRecipes);
 
@@ -31,7 +32,7 @@ router
   .route("/:id")
   .all(objectIdValidation(), validate)
   .get(getRecipeById)
-  .patch(updateRecipeValidation, validate, updateRecipe)
+  .patch(uploadSingle("image"), updateRecipeValidation, validate, updateRecipe)
   .delete(removeRecipe);
 
 export default router;

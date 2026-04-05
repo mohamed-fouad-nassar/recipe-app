@@ -5,6 +5,7 @@ import {
   removeRecipe as removeRecipeApi,
   getAllRecipes as getAllRecipesApi,
   getRecipeById as getRecipeByIdApi,
+  handleRecipeImage,
 } from "./recipe.service";
 import { NextFunction, Request, Response } from "express";
 import { catchAsync } from "../../common/utils/catch-async";
@@ -24,7 +25,14 @@ export const getAllRecipes = catchAsync(
 
 export const createRecipe = catchAsync(
   async (req: AuthRequest, res: Response, next: NextFunction) => {
-    const recipe = await createRecipeApi(req.body, req.user?.id);
+    const image = await handleRecipeImage(req);
+    const recipe = await createRecipeApi(
+      {
+        ...req.body,
+        ...(image && { image }),
+      },
+      req.user?.id,
+    );
     return res.status(201).json({
       status: httpStatus.SUCCESS,
       message: "Recipe created successfully",
@@ -46,9 +54,15 @@ export const getRecipeById = catchAsync(
 
 export const updateRecipe = catchAsync(
   async (req: AuthRequest, res: Response, next: NextFunction) => {
+    const image = await handleRecipeImage(req);
+    console.log(image);
+
     const recipe = await updateRecipeApi(
       req.params.id as string,
-      req.body,
+      {
+        ...req.body,
+        ...(image && { image }),
+      },
       req.user?.id,
     );
     return res.json({
