@@ -186,7 +186,6 @@ export const updateRecipe = async (
 
   Object.assign(recipe, data);
   await recipe.save();
-  console.log("New Recipe: ", recipe);
   return recipe;
 };
 
@@ -204,8 +203,6 @@ export const removeRecipe = async (
       httpStatus.FAIL,
       "You not don't have permission to perform this action",
     );
-
-  console.log(recipe.image);
 
   if (recipe.image && recipe.image.includes("uploads/recipes"))
     await deleteRecipeImage(recipe.image);
@@ -382,8 +379,5 @@ export const handleRecipeImage = async (
       throw new HttpError(500, httpStatus.FAIL, "Failed to get old recipe");
     }
   }
-
-  console.log("newImagePath: ", newImagePath);
-
   return newImagePath;
 };

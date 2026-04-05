@@ -55,8 +55,6 @@ export const getRecipeById = catchAsync(
 export const updateRecipe = catchAsync(
   async (req: AuthRequest, res: Response, next: NextFunction) => {
     const image = await handleRecipeImage(req);
-    console.log(image);
-
     const recipe = await updateRecipeApi(
       req.params.id as string,
       {
